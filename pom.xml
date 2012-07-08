@@ -7,19 +7,14 @@
      | POM Relationships
      -->
     <groupId>org.gonnot.prototype</groupId>
-    <artifactId>super-formula</artifactId>
+    <artifactId>visual-formula</artifactId>
     <version>0.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>net.codjo.test</groupId>
             <artifactId>codjo-test-common</artifactId>
             <scope>test</scope>
-            <version>3.57</version>
-        </dependency>
-        <dependency>
-            <groupId>xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.2</version>
+            <version>3.60</version>
         </dependency>
     </dependencies>
 
@@ -32,7 +27,7 @@
     | Project Information
     -->
 
-    <name>Prototype &gt; super-formula</name>
+    <name>Prototype &gt; visual-formula</name>
     <description>A visual mathematical formula evaluator library</description>
     <inceptionYear>2012</inceptionYear>
 

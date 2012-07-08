@@ -9,15 +9,15 @@ Description:
 A visual mathematical formula evaluator library.
 
 ```java
-VisualFormulaBuilder formula = VisualFormulaBuilder.initFormula(double|bigdecimal)
+VisualFormula formula = VisualFormulaBuilder.initFormula(double|bigdecimal|...)
     ._("                           valuation        ")
-    ._(" amount - quantity * ---------------------- ")
-    ._("                      endQuantity * nominal ")
-    ._("------------------------------------------- ")
-    ._("            beginValuation                  ")
-    .compile()
-    .variable("valuation", 5)
-    .variable("quantity", 10)
+    ._(" amount - quantity * ---------------------- ")
+    ._("                      endQuantity * nominal ")
+    ._("------------------------------------------- ")
+    ._("            beginValuation                  ")
+    .compile()
+    .variable("valuation", 5)
+    .variable("quantity", 10)
     ...;
 ```
 
