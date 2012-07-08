@@ -23,6 +23,12 @@ VisualFormula formula = VisualFormulaBuilder.initFormula(double|bigdecimal|...)
 
 Work in progress...
 
+Goals:
+------
++ Simple to use
++ No external dependencies
++ Fast
+
 Features requests:
 ------------------
 + tbd
