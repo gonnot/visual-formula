@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+     | POM Relationships
+     -->
+    <groupId>org.gonnot.prototype</groupId>
+    <artifactId>super-formula</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>net.codjo.test</groupId>
+            <artifactId>codjo-test-common</artifactId>
+            <scope>test</scope>
+            <version>3.57</version>
+        </dependency>
+        <dependency>
+            <groupId>xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </dependencies>
+
+    <!--
+     | Build Settings
+     -->
+    <!--<build></build>-->
+
+    <!--
+    | Project Information
+    -->
+
+    <name>Prototype &gt; super-formula</name>
+    <description>A visual mathematical formula evaluator library</description>
+    <inceptionYear>2012</inceptionYear>
+
+    <!--
+    | Environment Information
+    -->
+
+    <repositories>
+        <repository>
+            <id>embedded-codjo-official</id>
+            <url>http://repo.codjo.net/maven2/inhouse</url>
+        </repository>
+    </repositories>
+</project>
