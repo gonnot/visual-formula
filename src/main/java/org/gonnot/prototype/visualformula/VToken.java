@@ -9,6 +9,7 @@ class VToken {
     static enum VTokenType {
         ADD,
         MINUS,
+        MULTIPLY,
         NUMBER;
     }
 
@@ -25,6 +26,11 @@ class VToken {
 
     public static VToken minus() {
         return new VToken(VTokenType.MINUS, null);
+    }
+
+
+    public static VToken multiply() {
+        return new VToken(VTokenType.MULTIPLY, null);
     }
 
 

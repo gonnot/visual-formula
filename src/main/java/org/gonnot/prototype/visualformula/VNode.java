@@ -22,6 +22,11 @@ abstract class VNode {
     }
 
 
+    public static VNode multiply(VToken operator, VNode operandA, VNode operandB) {
+        return new VBinaryNode(operator, operandA, operandB);
+    }
+
+
     protected VNode(VToken token) {
         this.token = token;
     }
@@ -62,6 +67,9 @@ abstract class VNode {
             }
             else if (token.getType() == VTokenType.MINUS) {
                 return visitor.visitMinus(operandA, operandB);
+            }
+            else if (token.getType() == VTokenType.MULTIPLY) {
+                return visitor.visitMultiply(operandA, operandB);
             }
             throw new InternalError("Unknown token found " + token.getType());
         }

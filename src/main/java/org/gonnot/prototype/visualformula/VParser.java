@@ -22,6 +22,11 @@ class VParser {
                     operandB = VNode.number(tokens.get(++i));
                     stack.add(VNode.minus(token, operandA, operandB));
                     break;
+                case MULTIPLY:
+                    operandA = stack.pop();
+                    operandB = VNode.number(tokens.get(++i));
+                    stack.add(VNode.multiply(token, operandA, operandB));
+                    break;
                 case NUMBER:
                     stack.add(VNode.number(token));
                     break;

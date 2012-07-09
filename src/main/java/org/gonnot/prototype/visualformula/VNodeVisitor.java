@@ -20,4 +20,9 @@ class VNodeVisitor {
     public Integer visitMinus(VNode operandA, VNode operandB) {
         return operandA.visit(this) - operandB.visit(this);
     }
+
+
+    public Integer visitMultiply(VNode operandA, VNode operandB) {
+        return operandA.visit(this) * operandB.visit(this);
+    }
 }

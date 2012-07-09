@@ -51,6 +51,12 @@ public class VisualFormulaBuilderTest {
     }
 
 
+    @Test
+    public void testMultiplyTwoConstants() throws Exception {
+        assertFormula("5 * 2", 10);
+    }
+
+
     private static void assertFormula(String formula, int expected) {
         assertThat(VisualFormulaBuilder.init()
                          ._(formula)
