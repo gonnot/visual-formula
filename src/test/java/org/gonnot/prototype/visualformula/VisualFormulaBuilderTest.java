@@ -88,6 +88,24 @@ public class VisualFormulaBuilderTest {
     }
 
 
+    @Test
+    public void testDivideTwoConstants() throws Exception {
+        assertFormula("10 / 2", 5);
+    }
+
+
+    @Test
+    public void testDivideThreeConstants() throws Exception {
+        assertFormula("30 / 3 / 2", "((30 / 3) / 2)");
+    }
+
+
+    @Test
+    public void testDivideTwoConstantsAndAdd() throws Exception {
+        assertFormula("100 / 50 + 1", 3);
+    }
+
+
     private static void assertFormula(String stringFormula, int expected) {
         VisualFormula formula = VisualFormulaBuilder.init()
               ._(stringFormula)

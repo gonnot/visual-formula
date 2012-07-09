@@ -15,16 +15,21 @@ class VNodeFactory {
 
 
     static VBinaryNode add(VToken operator) {
-        return new VBinaryNode(operator, null, VNode.BASIC_OPERATION);
+        return new VBinaryNode(operator, VNode.BASIC_OPERATION);
     }
 
 
     public static VBinaryNode minus(VToken operator) {
-        return new VBinaryNode(operator, null, VNode.BASIC_OPERATION);
+        return new VBinaryNode(operator, VNode.BASIC_OPERATION);
     }
 
 
     public static VBinaryNode multiply(VToken operator) {
-        return new VBinaryNode(operator, null, VNode.PRIORITY_OPERATION);
+        return new VBinaryNode(operator, VNode.PRIORITY_OPERATION);
+    }
+
+
+    public static VBinaryNode divide(VToken operator) {
+        return new VBinaryNode(operator, VNode.PRIORITY_OPERATION);
     }
 }

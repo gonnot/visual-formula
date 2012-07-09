@@ -26,6 +26,9 @@ class VLexer {
         if ("*".equals(tokenInString)) {
             return VToken.multiply();
         }
+        if ("/".equals(tokenInString)) {
+            return VToken.divide();
+        }
         return VToken.number(tokenInString);
     }
 }

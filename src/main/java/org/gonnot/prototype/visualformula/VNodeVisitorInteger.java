@@ -21,4 +21,9 @@ class VNodeVisitorInteger implements VNodeVisitor<Integer> {
     public Integer visitMultiply(VNode leftOperand, VNode rightOperand) {
         return leftOperand.visit(this) * rightOperand.visit(this);
     }
+
+
+    public Integer visitDivide(VNode leftOperand, VNode rightOperand) {
+        return leftOperand.visit(this) / rightOperand.visit(this);
+    }
 }

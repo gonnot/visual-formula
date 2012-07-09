@@ -9,17 +9,27 @@ class VNodeVisitorDump implements VNodeVisitor<String> {
 
 
     public String visitAdd(VNode leftOperand, VNode rightOperand) {
-        return "(" + safeVisit(leftOperand) + " + " + safeVisit(rightOperand) + ")";
+        return visitBinaryOperator(leftOperand, " + ", rightOperand);
     }
 
 
     public String visitMinus(VNode leftOperand, VNode rightOperand) {
-        return "(" + safeVisit(leftOperand) + " - " + safeVisit(rightOperand) + ")";
+        return visitBinaryOperator(leftOperand, " - ", rightOperand);
     }
 
 
     public String visitMultiply(VNode leftOperand, VNode rightOperand) {
-        return "(" + safeVisit(leftOperand) + " x " + safeVisit(rightOperand) + ")";
+        return visitBinaryOperator(leftOperand, " x ", rightOperand);
+    }
+
+
+    public String visitDivide(VNode leftOperand, VNode rightOperand) {
+        return visitBinaryOperator(leftOperand, " / ", rightOperand);
+    }
+
+
+    private String visitBinaryOperator(VNode leftOperand, String operatorString, VNode rightOperand) {
+        return "(" + safeVisit(leftOperand) + operatorString + safeVisit(rightOperand) + ")";
     }
 
 

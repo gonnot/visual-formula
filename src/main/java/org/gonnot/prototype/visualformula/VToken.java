@@ -10,6 +10,7 @@ class VToken {
         ADD,
         MINUS,
         MULTIPLY,
+        DIVIDE,
         NUMBER;
     }
 
@@ -20,17 +21,27 @@ class VToken {
 
 
     public static VToken add() {
-        return new VToken(VTokenType.ADD, null);
+        return new VToken(VTokenType.ADD);
     }
 
 
     public static VToken minus() {
-        return new VToken(VTokenType.MINUS, null);
+        return new VToken(VTokenType.MINUS);
     }
 
 
     public static VToken multiply() {
-        return new VToken(VTokenType.MULTIPLY, null);
+        return new VToken(VTokenType.MULTIPLY);
+    }
+
+
+    public static VToken divide() {
+        return new VToken(VTokenType.DIVIDE);
+    }
+
+
+    protected VToken(VTokenType type) {
+        this(type, null);
     }
 
 

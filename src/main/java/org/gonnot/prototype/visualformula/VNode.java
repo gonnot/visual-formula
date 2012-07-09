@@ -36,15 +36,13 @@ abstract class VNode {
         }
     }
     static class VBinaryNode extends VNode {
-
         private VNode leftOperand;
         private int priority;
         private VNode rightOperand;
 
 
-        VBinaryNode(VToken token, VNode leftOperand, int priority) {
+        VBinaryNode(VToken token, int priority) {
             super(token);
-            this.leftOperand = leftOperand;
             this.priority = priority;
         }
 
@@ -84,6 +82,9 @@ abstract class VNode {
             }
             else if (token.getType() == VTokenType.MULTIPLY) {
                 return visitor.visitMultiply(leftOperand, rightOperand);
+            }
+            else if (token.getType() == VTokenType.DIVIDE) {
+                return visitor.visitDivide(leftOperand, rightOperand);
             }
             throw new InternalError("Unknown token found " + token.getType());
         }

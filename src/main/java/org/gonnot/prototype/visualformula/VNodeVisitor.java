@@ -13,4 +13,7 @@ interface VNodeVisitor<T> {
 
 
     public T visitMultiply(VNode leftOperand, VNode rightOperand);
+
+
+    public T visitDivide(VNode leftOperand, VNode rightOperand);
 }

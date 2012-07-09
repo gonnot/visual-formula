@@ -25,6 +25,9 @@ class VParser {
                 case MULTIPLY:
                     handleNode(VNodeFactory.multiply(token));
                     break;
+                case DIVIDE:
+                    handleNode(VNodeFactory.divide(token));
+                    break;
                 case NUMBER:
                     VNode number = VNodeFactory.number(token);
                     if (lastOperator == null || lastOperator.getRightOperand() != null) {
