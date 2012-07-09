@@ -2,27 +2,15 @@ package org.gonnot.prototype.visualformula;
 /**
  *
  */
-class VNodeVisitor {
-    VNodeVisitor() {
-    }
+interface VNodeVisitor<T> {
+    public T visitNumber(String numberInString);
 
 
-    public Integer visitNumber(String numberInString) {
-        return Integer.decode(numberInString);
-    }
+    public T visitAdd(VNode leftOperand, VNode rightOperand);
 
 
-    public Integer visitAdd(VNode operandA, VNode operandB) {
-        return operandA.visit(this) + operandB.visit(this);
-    }
+    public T visitMinus(VNode leftOperand, VNode rightOperand);
 
 
-    public Integer visitMinus(VNode operandA, VNode operandB) {
-        return operandA.visit(this) - operandB.visit(this);
-    }
-
-
-    public Integer visitMultiply(VNode operandA, VNode operandB) {
-        return operandA.visit(this) * operandB.visit(this);
-    }
+    public T visitMultiply(VNode leftOperand, VNode rightOperand);
 }

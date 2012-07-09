@@ -48,4 +48,10 @@ class VToken {
     public String getTokenInString() {
         return tokenInString;
     }
+
+
+    @Override
+    public String toString() {
+        return "VToken{" + type + (tokenInString != null ? tokenInString : "") + "}";
+    }
 }

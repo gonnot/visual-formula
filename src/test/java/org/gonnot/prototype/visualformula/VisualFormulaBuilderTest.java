@@ -1,4 +1,5 @@
 package org.gonnot.prototype.visualformula;
+import org.gonnot.prototype.visualformula.VisualFormulaBuilder.VisualFormula;
 import org.junit.Test;
 import static net.codjo.test.common.matcher.JUnitMatchers.*;
 /**
@@ -57,11 +58,50 @@ public class VisualFormulaBuilderTest {
     }
 
 
-    private static void assertFormula(String formula, int expected) {
+    @Test
+    public void testMultiplyThreeConstants() throws Exception {
+        assertFormula("1 * 2 * 3", "((1 x 2) x 3)");
+    }
+
+
+    @Test
+    public void testMultiplyTwoConstantsAndAdd() throws Exception {
+        assertFormula("5 * 2 + 1", 11);
+    }
+
+
+    @Test
+    public void testNaturalPriorities() throws Exception {
+        assertFormula("1 + 2 * 3", 1 + 2 * 3);
+        assertFormula("3 + 2 + 2 * 3 + 2", 3 + 2 + 2 * 3 + 2);
+        assertFormula("1 + 2 + 3 * 4", 1 + 2 + 3 * 4);
+        assertFormula("1 + 2 * 3 * 4 + 5", 1 + 2 * 3 * 4 + 5);
+        assertFormula("1 + 2 * 3 + 4 * 5", 1 + 2 * 3 + 4 * 5);
+    }
+
+
+    @Test
+    public void testNaturalPrioritiesInString() throws Exception {
+        assertFormula("1 + 2 * 3 * 4 + 5", "((1 + ((2 x 3) x 4)) + 5)");
+        assertFormula("1 + 2 * 3 + 4", "((1 + (2 x 3)) + 4)");
+        assertFormula("1 + 2 * 3 + 4 * 5", "((1 + (2 x 3)) + (4 x 5))");
+    }
+
+
+    private static void assertFormula(String stringFormula, int expected) {
+        VisualFormula formula = VisualFormulaBuilder.init()
+              ._(stringFormula)
+              .compile();
+
+        assertThat(formula.compute(), describedAs("formula '"
+                                                  + stringFormula
+                                                  + "' has been wrongly parsed <'" + formula.dumpTree() + "'>", is(expected)));
+    }
+
+
+    private static void assertFormula(String input, String expectedTranslation) {
         assertThat(VisualFormulaBuilder.init()
-                         ._(formula)
-                         .compile()
-                         .compute(),
-                   is(expected));
+                         ._(input)
+                         .compile().dumpTree(), is(expectedTranslation));
     }
 }

@@ -40,7 +40,12 @@ public class VisualFormulaBuilder {
 
 
         public Integer compute() {
-            return node.visit(new VNodeVisitor());
+            return node.visit(new VNodeVisitorInteger());
+        }
+
+
+        public String dumpTree() {
+            return node.visit(new VNodeVisitorDump());
         }
     }
 }
