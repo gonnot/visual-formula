@@ -60,9 +60,10 @@ class VParser {
                 stack.pop();
                 stack.add(binaryNode);
             }
-            else if (parentNode.getLeftOperand() == lastOperator) {
-                parentNode.setLeftOperand(binaryNode);
-            }
+// Unnecessary code - the last operator is always in the right Operand
+//            else if (parentNode.getLeftOperand() == lastOperator) {
+//                parentNode.setLeftOperand(binaryNode);
+//            }
             else if (parentNode.getRightOperand() == lastOperator) {
                 parentNode.setRightOperand(binaryNode);
             }
