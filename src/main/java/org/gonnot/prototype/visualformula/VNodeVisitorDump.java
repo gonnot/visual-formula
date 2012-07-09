@@ -2,7 +2,7 @@ package org.gonnot.prototype.visualformula;
 /**
  *
  */
-public class VNodeVisitorDump implements VNodeVisitor<String> {
+class VNodeVisitorDump implements VNodeVisitor<String> {
     public String visitNumber(String numberInString) {
         return numberInString;
     }

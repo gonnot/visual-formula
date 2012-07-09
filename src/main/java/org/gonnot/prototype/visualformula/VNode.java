@@ -4,29 +4,9 @@ import org.gonnot.prototype.visualformula.VToken.VTokenType;
  *
  */
 abstract class VNode {
-    private static final int BASIC_OPERATION = 0;
-    private static final int PRIORITY_OPERATION = 10;
+    static final int BASIC_OPERATION = 0;
+    static final int PRIORITY_OPERATION = 10;
     protected VToken token;
-
-
-    static VNode number(VToken token) {
-        return new VNumber(token);
-    }
-
-
-    static VBinaryNode add(VToken operator, VNode operandA) {
-        return new VBinaryNode(operator, operandA, BASIC_OPERATION);
-    }
-
-
-    public static VBinaryNode minus(VToken operator, VNode operandA) {
-        return new VBinaryNode(operator, operandA, BASIC_OPERATION);
-    }
-
-
-    public static VBinaryNode multiply(VToken operator) {
-        return new VBinaryNode(operator, null, PRIORITY_OPERATION);
-    }
 
 
     protected VNode(VToken token) {
@@ -37,7 +17,7 @@ abstract class VNode {
     public abstract <T> T visit(VNodeVisitor<T> visitor);
 
 
-    private static class VNumber extends VNode {
+    static class VNumber extends VNode {
 
         VNumber(VToken token) {
             super(token);

@@ -8,59 +8,25 @@ import org.gonnot.prototype.visualformula.VNode.VBinaryNode;
  */
 class VParser {
     private Deque<VNode> stack = new ArrayDeque<VNode>();
+    private Deque<VBinaryNode> allOperators = new ArrayDeque<VBinaryNode>();
+    private VBinaryNode lastOperator = null;
 
 
     public VNode buildTrees(List<VToken> tokens) {
-        Deque<VBinaryNode> allOperators = new ArrayDeque<VBinaryNode>();
-        VBinaryNode lastOperator = null;
-
         for (int i = 0, tokensSize = tokens.size(); i < tokensSize; i++) {
             VToken token = tokens.get(i);
             switch (token.getType()) {
                 case ADD:
-                    lastOperator = VNode.add(token, stack.pop());
-                    allOperators.add(lastOperator);
-                    stack.add(lastOperator);
+                    handleNode(VNodeFactory.add(token));
                     break;
                 case MINUS:
-                    lastOperator = VNode.minus(token, stack.pop());
-                    allOperators.add(lastOperator);
-                    stack.add(lastOperator);
+                    handleNode(VNodeFactory.minus(token));
                     break;
                 case MULTIPLY:
-                    VBinaryNode multiply = VNode.multiply(token);
-                    if (lastOperator == null) {
-                        multiply.setLeftOperand(stack.pop());
-                        stack.add(multiply);
-                    }
-                    else if (lastOperator.getPriority() < multiply.getPriority()) {
-                        multiply.setLeftOperand(lastOperator.getRightOperand());
-                        lastOperator.setRightOperand(multiply);
-                    }
-                    else if (lastOperator.getPriority() == multiply.getPriority()) {
-                        multiply.setLeftOperand(lastOperator);
-
-                        VBinaryNode parentNode = findParentNode(lastOperator, allOperators);
-                        if (parentNode == null) {
-                            stack.pop();
-                            stack.add(multiply);
-                        }
-                        else if (parentNode.getLeftOperand() == lastOperator) {
-                            parentNode.setLeftOperand(multiply);
-                        }
-                        else if (parentNode.getRightOperand() == lastOperator) {
-                            parentNode.setRightOperand(multiply);
-                        }
-                    }
-                    else {
-                        multiply.setLeftOperand(lastOperator.getRightOperand());
-                        lastOperator.setRightOperand(multiply);
-                    }
-                    lastOperator = multiply;
-                    allOperators.add(lastOperator);
+                    handleNode(VNodeFactory.multiply(token));
                     break;
                 case NUMBER:
-                    VNode number = VNode.number(token);
+                    VNode number = VNodeFactory.number(token);
                     if (lastOperator == null || lastOperator.getRightOperand() != null) {
                         stack.add(number);
                     }
@@ -71,6 +37,39 @@ class VParser {
             }
         }
         return stack.getFirst();
+    }
+
+
+    private void handleNode(VBinaryNode binaryNode) {
+        if (lastOperator == null) {
+            binaryNode.setLeftOperand(stack.pop());
+            stack.add(binaryNode);
+        }
+        else if (lastOperator.getPriority() < binaryNode.getPriority()) {
+            binaryNode.setLeftOperand(lastOperator.getRightOperand());
+            lastOperator.setRightOperand(binaryNode);
+        }
+        else if (lastOperator.getPriority() == binaryNode.getPriority()) {
+            binaryNode.setLeftOperand(lastOperator);
+
+            VBinaryNode parentNode = findParentNode(lastOperator, allOperators);
+            if (parentNode == null) {
+                stack.pop();
+                stack.add(binaryNode);
+            }
+            else if (parentNode.getLeftOperand() == lastOperator) {
+                parentNode.setLeftOperand(binaryNode);
+            }
+            else if (parentNode.getRightOperand() == lastOperator) {
+                parentNode.setRightOperand(binaryNode);
+            }
+        }
+        else {
+            binaryNode.setLeftOperand(stack.pop());
+            stack.add(binaryNode);
+        }
+        lastOperator = binaryNode;
+        allOperators.add(lastOperator);
     }
 
 
