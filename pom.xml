@@ -15,6 +15,12 @@
             <artifactId>codjo-test-common</artifactId>
             <scope>test</scope>
             <version>3.60</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>dumbster</groupId>
+                    <artifactId>dumbster</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -39,6 +45,10 @@
         <repository>
             <id>embedded-codjo-official</id>
             <url>http://repo.codjo.net/maven2/inhouse</url>
+        </repository>
+        <repository>
+            <id>embedded-codjo-official-extended</id>
+            <url>http://repo.codjo.net/maven2/external</url>
         </repository>
     </repositories>
 </project>
