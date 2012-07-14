@@ -35,6 +35,41 @@ import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.stringDump
  */
 @RunWith(Enclosed.class)
 public class VisualFormulaBuilderTest {
+    public static class DocSampleTest {
+        @Test
+        public void testStringEvaluator() throws Exception {
+            assertThat(VisualFormulaBuilder.init()
+                             ._("3 + quantity * price - 10")
+                             .compile(integerFormula())
+                             .variable("quantity", 2)
+                             .variable("price", 3)
+                             .executeWith(stringDumpEvaluator()),
+                       is("((3 + (quantity x price)) - 10)"));
+        }
+
+
+        @Test
+        public void testIntegerEvaluator() throws Exception {
+            assertThat(VisualFormulaBuilder.init()
+                             ._("3 + quantity * price - 10")
+                             .compile(integerFormula())
+                             .variable("quantity", 2)
+                             .variable("price", 3)
+                             .executeWith(integerEvaluator()),
+                       is(-1));
+        }
+
+
+        @Test
+        public void testTwoConsecutiveCalculation() throws Exception {
+            VisualFormula<Integer> formula = VisualFormulaBuilder.init()
+                  ._("3 + value")
+                  .compile(integerFormula());
+
+            assertThat(formula.variable("value", 2).executeWith(integerEvaluator()), is(5));
+            assertThat(formula.variable("value", 3).executeWith(integerEvaluator()), is(6));
+        }
+    }
     public static class VariablesTest {
         @Test
         public void testOneSimpleVariable() throws Exception {
@@ -42,7 +77,8 @@ public class VisualFormulaBuilderTest {
                              ._("exposure")
                              .compile(integerFormula())
                              .variable("exposure", 5)
-                             .execute(integerEvaluator()), is(5));
+                             .executeWith(integerEvaluator()),
+                       is(5));
         }
 
 
@@ -52,7 +88,8 @@ public class VisualFormulaBuilderTest {
                              ._("exposure")
                              .compile(bigDecimalFormula())
                              .variable("exposure", null)
-                             .execute(stringDumpEvaluator()), is("exposure"));
+                             .executeWith(stringDumpEvaluator()),
+                       is("exposure"));
         }
 
 
@@ -63,7 +100,8 @@ public class VisualFormulaBuilderTest {
                              ._("-exposure")
                              .compile(integerFormula())
                              .variable("exposure", 5)
-                             .execute(integerEvaluator()), is(-5));
+                             .executeWith(integerEvaluator()),
+                       is(-5));
         }
 
 
@@ -74,7 +112,8 @@ public class VisualFormulaBuilderTest {
                              .compile(integerFormula())
                              .variable("price", 5)
                              .variable("rebate", 2)
-                             .compute(), is(3));
+                             .compute(),
+                       is(3));
         }
     }
     public static class ConstantTest {

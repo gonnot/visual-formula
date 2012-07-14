@@ -102,11 +102,11 @@ public class VisualFormulaBuilder {
         @SuppressWarnings({"unchecked"})
         public Integer compute() {
             // TODO this method should disappear as soon as the public API becomes clearer
-            return execute((VNodeVisitor<Integer, ? super VARIABLE_TYPE>)integerEvaluator());
+            return executeWith((VNodeVisitor<Integer, ? super VARIABLE_TYPE>)integerEvaluator());
         }
 
 
-        public <T> T execute(VNodeVisitor<T, ? super VARIABLE_TYPE> visitor) {
+        public <T> T executeWith(VNodeVisitor<T, ? super VARIABLE_TYPE> visitor) {
             visitor.init(context);
             return node.visit(visitor);
         }
