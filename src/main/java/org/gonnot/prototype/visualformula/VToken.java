@@ -32,12 +32,18 @@ class VToken {
         MINUS,
         MULTIPLY,
         DIVIDE,
+        VARIABLE,
         NUMBER;
     }
 
 
     public static VToken number(String number) {
         return new VToken(VTokenType.NUMBER, number);
+    }
+
+
+    public static VToken variables(String name) {
+        return new VToken(VTokenType.VARIABLE, name);
     }
 
 

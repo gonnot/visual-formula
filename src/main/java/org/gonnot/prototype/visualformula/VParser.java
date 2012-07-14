@@ -50,17 +50,22 @@ class VParser {
                     handleNode(VNodeFactory.divide(token));
                     break;
                 case NUMBER:
-                    VNode number = VNodeFactory.number(token);
-                    if (lastOperator == null || lastOperator.getRightOperand() != null) {
-                        stack.add(number);
-                    }
-                    else {
-                        lastOperator.setRightOperand(number);
-                    }
+                case VARIABLE:
+                    handleOperandNode(VNodeFactory.operand(token));
                     break;
             }
         }
         return stack.getFirst();
+    }
+
+
+    private void handleOperandNode(VNode number) {
+        if (lastOperator == null || lastOperator.getRightOperand() != null) {
+            stack.add(number);
+        }
+        else {
+            lastOperator.setRightOperand(number);
+        }
     }
 
 

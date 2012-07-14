@@ -18,29 +18,22 @@
  *    implied. See the License for the specific language governing permissions
  *    and limitations under the License.
  */
-
 package org.gonnot.prototype.visualformula;
+import java.util.HashMap;
+import java.util.Map;
 /**
  *
  */
-public interface VNodeVisitor<VISITOR_RESULT, VARIABLE_TYPE> {
-    public void init(FormulaContext<? extends VARIABLE_TYPE> context);
+public class FormulaContext<T> {
+    private Map<String, T> variables = new HashMap<String, T>();
 
 
-    public VISITOR_RESULT visitNumber(String numberInString);
+    public void declare(String name, T value) {
+        variables.put(name, value);
+    }
 
 
-    public VISITOR_RESULT visitVariable(String variableName);
-
-
-    public VISITOR_RESULT visitAdd(VNode leftOperand, VNode rightOperand);
-
-
-    public VISITOR_RESULT visitMinus(VNode leftOperand, VNode rightOperand);
-
-
-    public VISITOR_RESULT visitMultiply(VNode leftOperand, VNode rightOperand);
-
-
-    public VISITOR_RESULT visitDivide(VNode leftOperand, VNode rightOperand);
+    public T getValueOf(String name) {
+        return variables.get(name);
+    }
 }

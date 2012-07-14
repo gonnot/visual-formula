@@ -35,19 +35,25 @@ abstract class VNode {
     }
 
 
-    public abstract <T> T visit(VNodeVisitor<T> visitor);
+    public abstract <T, U> T visit(VNodeVisitor<T, U> visitor);
 
 
-    static class VNumber extends VNode {
+    static class VOperand extends VNode {
 
-        VNumber(VToken token) {
+        VOperand(VToken token) {
             super(token);
         }
 
 
         @Override
-        public <T> T visit(VNodeVisitor<T> visitor) {
-            return visitor.visitNumber(token.getTokenInString());
+        public <T, U> T visit(VNodeVisitor<T, U> visitor) {
+            if (token.getType() == VTokenType.NUMBER) {
+                return visitor.visitNumber(token.getTokenInString());
+            }
+            else if (token.getType() == VTokenType.VARIABLE) {
+                return visitor.visitVariable(token.getTokenInString());
+            }
+            throw new InternalError("Unknown token found " + token.getType());
         }
 
 
@@ -94,7 +100,7 @@ abstract class VNode {
 
 
         @Override
-        public <T> T visit(VNodeVisitor<T> visitor) {
+        public <T, U> T visit(VNodeVisitor<T, U> visitor) {
             if (token.getType() == VTokenType.ADD) {
                 return visitor.visitAdd(leftOperand, rightOperand);
             }

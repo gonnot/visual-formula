@@ -20,6 +20,7 @@
  */
 
 package org.gonnot.prototype.visualformula;
+import java.math.BigDecimal;
 import java.util.List;
 /**
  *
@@ -40,19 +41,57 @@ public class VisualFormulaBuilder {
     }
 
 
-    public VisualFormula compile() {
+    public VisualFormula<Integer> compile() {
+        return compile(integerFormula());
+    }
+
+
+    public static FormulaType<Integer> integerFormula() {
+        return new FormulaType<Integer>();
+    }
+
+
+    public static FormulaType<Double> doubleFormula() {
+        return new FormulaType<Double>();
+    }
+
+
+    public static FormulaType<BigDecimal> bigDecimalFormula() {
+        return new FormulaType<BigDecimal>();
+    }
+
+
+    @SuppressWarnings({"UnusedParameters"})
+    public <T> VisualFormula<T> compile(FormulaType<T> formulaType) {
         VLexer lexer = new VLexer();
         List<VToken> tokens = lexer.parse(lines);
 
         VParser parser = new VParser();
         VNode node = parser.buildTrees(tokens);
 
-        return new VisualFormula(node);
+        return new VisualFormula<T>(node);
     }
 
 
-    public static class VisualFormula {
+    public static VNodeVisitor<Integer, Integer> integerEvaluator() {
+        return new VNodeVisitorInteger();
+    }
+
+
+    public static VNodeVisitor<String, Object> stringDumpEvaluator() {
+        return new VNodeVisitorDump();
+    }
+
+
+    @SuppressWarnings({"UnusedDeclaration"})
+    public static class FormulaType<T> {
+        private FormulaType() {
+        }
+    }
+
+    public static class VisualFormula<VARIABLE_TYPE> {
         private VNode node;
+        private FormulaContext<VARIABLE_TYPE> context = new FormulaContext<VARIABLE_TYPE>();
 
 
         public VisualFormula(VNode node) {
@@ -60,13 +99,32 @@ public class VisualFormulaBuilder {
         }
 
 
+        @SuppressWarnings({"unchecked"})
         public Integer compute() {
-            return node.visit(new VNodeVisitorInteger());
+            // TODO this method should disappear as soon as the public API becomes clearer
+            return execute((VNodeVisitor<Integer, ? super VARIABLE_TYPE>)integerEvaluator());
+        }
+
+
+        public <T> T execute(VNodeVisitor<T, ? super VARIABLE_TYPE> visitor) {
+            visitor.init(context);
+            return node.visit(visitor);
         }
 
 
         public String dumpTree() {
-            return node.visit(new VNodeVisitorDump());
+            return node.visit(stringDumpEvaluator());
+        }
+
+
+        public VisualFormula<VARIABLE_TYPE> variable(String name, VARIABLE_TYPE value) {
+            context.declare(name, value);
+            return this;
+        }
+
+
+        public VARIABLE_TYPE getValueOf(String name) {
+            return context.getValueOf(name);
         }
     }
 }

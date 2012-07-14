@@ -23,9 +23,18 @@ package org.gonnot.prototype.visualformula;
 /**
  *
  */
-class VNodeVisitorDump implements VNodeVisitor<String> {
+class VNodeVisitorDump implements VNodeVisitor<String, Object> {
+    public void init(FormulaContext formulaContext) {
+    }
+
+
     public String visitNumber(String numberInString) {
         return numberInString;
+    }
+
+
+    public String visitVariable(String variableName) {
+        return variableName;
     }
 
 

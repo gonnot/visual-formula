@@ -21,6 +21,7 @@
 
 package org.gonnot.prototype.visualformula;
 import org.gonnot.prototype.visualformula.VNode.VBinaryNode;
+import org.gonnot.prototype.visualformula.VNode.VOperand;
 /**
  *
  */
@@ -30,8 +31,8 @@ class VNodeFactory {
     }
 
 
-    static VNode number(VToken token) {
-        return new VNode.VNumber(token);
+    public static VNode operand(VToken token) {
+        return new VOperand(token);
     }
 
 

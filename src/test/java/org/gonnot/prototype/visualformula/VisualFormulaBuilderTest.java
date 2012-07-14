@@ -21,17 +21,63 @@
 
 package org.gonnot.prototype.visualformula;
 import org.gonnot.prototype.visualformula.VisualFormulaBuilder.VisualFormula;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 import static net.codjo.test.common.matcher.JUnitMatchers.*;
+import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.bigDecimalFormula;
+import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.integerEvaluator;
+import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.integerFormula;
+import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.stringDumpEvaluator;
 /**
  *
  */
 @RunWith(Enclosed.class)
 public class VisualFormulaBuilderTest {
+    public static class VariablesTest {
+        @Test
+        public void testOneSimpleVariable() throws Exception {
+            assertThat(VisualFormulaBuilder.init()
+                             ._("exposure")
+                             .compile(integerFormula())
+                             .variable("exposure", 5)
+                             .execute(integerEvaluator()), is(5));
+        }
 
-    public static class FormulaWithConstantTest {
+
+        @Test
+        public void testOneSimpleVariableInString() throws Exception {
+            assertThat(VisualFormulaBuilder.init()
+                             ._("exposure")
+                             .compile(bigDecimalFormula())
+                             .variable("exposure", null)
+                             .execute(stringDumpEvaluator()), is("exposure"));
+        }
+
+
+        @Test
+        @Ignore("Not sure that it's a good idea to handle such case")
+        public void testOneSimpleNegativeVariable() throws Exception {
+            assertThat(VisualFormulaBuilder.init()
+                             ._("-exposure")
+                             .compile(integerFormula())
+                             .variable("exposure", 5)
+                             .execute(integerEvaluator()), is(-5));
+        }
+
+
+        @Test
+        public void testMinusOperatorOnVariables() throws Exception {
+            assertThat(VisualFormulaBuilder.init()
+                             ._("price - rebate")
+                             .compile(integerFormula())
+                             .variable("price", 5)
+                             .variable("rebate", 2)
+                             .compute(), is(3));
+        }
+    }
+    public static class ConstantTest {
         @Test
         public void testOneSimpleConstant() throws Exception {
             assertFormula("5", 5);

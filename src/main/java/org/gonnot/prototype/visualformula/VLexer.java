@@ -50,6 +50,9 @@ class VLexer {
         if ("/".equals(tokenInString)) {
             return VToken.divide();
         }
-        return VToken.number(tokenInString);
+        if (Character.isDigit(tokenInString.charAt(0)) || tokenInString.startsWith("-")) {
+            return VToken.number(tokenInString);
+        }
+        return VToken.variables(tokenInString);
     }
 }

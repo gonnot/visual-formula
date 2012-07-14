@@ -23,9 +23,26 @@ package org.gonnot.prototype.visualformula;
 /**
  *
  */
-class VNodeVisitorInteger implements VNodeVisitor<Integer> {
+class VNodeVisitorInteger implements VNodeVisitor<Integer, Integer> {
+    private FormulaContext<? extends Integer> context;
+
+
+    VNodeVisitorInteger() {
+    }
+
+
+    public void init(FormulaContext<? extends Integer> formulaContext) {
+        this.context = formulaContext;
+    }
+
+
     public Integer visitNumber(String numberInString) {
         return Integer.decode(numberInString);
+    }
+
+
+    public Integer visitVariable(String variableName) {
+        return context.getValueOf(variableName);
     }
 
 
