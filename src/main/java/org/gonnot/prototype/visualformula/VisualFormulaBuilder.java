@@ -121,10 +121,5 @@ public class VisualFormulaBuilder {
             context.declare(name, value);
             return this;
         }
-
-
-        public VARIABLE_TYPE getValueOf(String name) {
-            return context.getValueOf(name);
-        }
     }
 }

@@ -25,6 +25,7 @@ package org.gonnot.prototype.visualformula;
  */
 class VToken {
     private VTokenType type;
+    private int column;
     private String tokenInString;
 
     static enum VTokenType {
@@ -37,43 +38,44 @@ class VToken {
     }
 
 
-    public static VToken number(String number) {
-        return new VToken(VTokenType.NUMBER, number);
+    public static VToken number(String number, int column) {
+        return new VToken(VTokenType.NUMBER, number, column);
     }
 
 
-    public static VToken variables(String name) {
-        return new VToken(VTokenType.VARIABLE, name);
+    public static VToken variables(String name, int column) {
+        return new VToken(VTokenType.VARIABLE, name, column);
     }
 
 
-    public static VToken add() {
-        return new VToken(VTokenType.ADD);
+    public static VToken add(int column) {
+        return new VToken(VTokenType.ADD, column);
     }
 
 
-    public static VToken minus() {
-        return new VToken(VTokenType.MINUS);
+    public static VToken minus(int column) {
+        return new VToken(VTokenType.MINUS, column);
     }
 
 
-    public static VToken multiply() {
-        return new VToken(VTokenType.MULTIPLY);
+    public static VToken multiply(int column) {
+        return new VToken(VTokenType.MULTIPLY, column);
     }
 
 
-    public static VToken divide() {
-        return new VToken(VTokenType.DIVIDE);
+    public static VToken divide(int column) {
+        return new VToken(VTokenType.DIVIDE, column);
     }
 
 
-    protected VToken(VTokenType type) {
-        this(type, null);
+    protected VToken(VTokenType type, int column) {
+        this(type, null, column);
     }
 
 
-    protected VToken(VTokenType type, String tokenInString) {
+    protected VToken(VTokenType type, String tokenInString, int column) {
         this.type = type;
+        this.column = column;
         this.tokenInString = tokenInString;
     }
 
@@ -88,8 +90,13 @@ class VToken {
     }
 
 
+    public int getColumn() {
+        return column;
+    }
+
+
     @Override
     public String toString() {
-        return "VToken{" + type + (tokenInString != null ? tokenInString : "") + "}";
+        return "token{" + type + (tokenInString != null ? tokenInString : "") + "}";
     }
 }
