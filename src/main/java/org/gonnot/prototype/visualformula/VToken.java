@@ -29,12 +29,29 @@ class VToken {
     private String tokenInString;
 
     static enum VTokenType {
-        ADD,
-        MINUS,
-        MULTIPLY,
-        DIVIDE,
+        ADD(true),
+        MINUS(true),
+        MULTIPLY(true),
+        DIVIDE(true),
+        VISUAL_DIVIDE,
         VARIABLE,
         NUMBER;
+        private boolean operatorInline;
+
+
+        VTokenType() {
+            this(false);
+        }
+
+
+        VTokenType(boolean operatorInline) {
+            this.operatorInline = operatorInline;
+        }
+
+
+        public boolean isOperatorInline() {
+            return operatorInline;
+        }
     }
 
 
@@ -68,6 +85,11 @@ class VToken {
     }
 
 
+    public static VToken visualDivide(int column) {
+        return new VToken(VTokenType.VISUAL_DIVIDE, column);
+    }
+
+
     protected VToken(VTokenType type, int column) {
         this(type, null, column);
     }
@@ -92,6 +114,11 @@ class VToken {
 
     public int getColumn() {
         return column;
+    }
+
+
+    public boolean isOperatorInline() {
+        return type.isOperatorInline();
     }
 
 

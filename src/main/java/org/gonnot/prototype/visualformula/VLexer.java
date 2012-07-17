@@ -41,6 +41,11 @@ class VLexer {
                 tokens.add(VToken.variables(line.substring(column, endColumn), column));
                 column = endColumn - 1;
             }
+            else if ('-' == currentChar && '-' == nextChar(line, column) && lastTokenIsOperator(tokens)) {
+                int endColumn = findTokenEndIndex(WHILE_MINUS, line, column + 1);
+                tokens.add(VToken.visualDivide(column));
+                column = endColumn - 1;
+            }
             else {
                 //noinspection SwitchStatementWithoutDefaultBranch
                 switch (currentChar) {
@@ -60,6 +65,23 @@ class VLexer {
             }
         }
         return tokens;
+    }
+
+
+    private char nextChar(String line, int column) {
+        if (column + 1 >= line.length()) {
+            return 0;
+        }
+        return line.charAt(column + 1);
+    }
+
+
+    private boolean lastTokenIsOperator(List<VToken> tokens) {
+        if (tokens.isEmpty()) {
+            return true;
+        }
+        VToken vToken = tokens.get(tokens.size() - 1);
+        return vToken.isOperatorInline();
     }
 
 
@@ -100,6 +122,11 @@ class VLexer {
     private static final Functor WHILE_VARIABLE = new Functor() {
         public boolean isPartOfTheToken(char currentChar) {
             return Character.isJavaIdentifierPart(currentChar);
+        }
+    };
+    private static final Functor WHILE_MINUS = new Functor() {
+        public boolean isPartOfTheToken(char currentChar) {
+            return '-' == currentChar;
         }
     };
 }

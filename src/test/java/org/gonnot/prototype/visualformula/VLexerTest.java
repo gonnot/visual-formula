@@ -43,6 +43,18 @@ public class VLexerTest {
         public void testOneSimpleMultiplication() throws Exception {
             assertLexerResult("10*-20", "{NUMBER(10)-C:0}", "{MULTIPLY-C:2}", "{NUMBER(-20)-C:3}");
         }
+
+
+        @Test
+        public void testRemoveNegativeNumber() throws Exception {
+            assertLexerResult("10--20", "{NUMBER(10)-C:0}", "{MINUS-C:2}", "{NUMBER(-20)-C:3}");
+        }
+
+
+        @Test
+        public void testVisualDivide() throws Exception {
+            assertLexerResult("10 * ----- + -20", "{NUMBER(10)-C:0}", "{MULTIPLY-C:3}", "{VISUAL_DIVIDE-C:5}", "{ADD-C:11}", "{NUMBER(-20)-C:13}");
+        }
     }
     public static class BasicOperatorTest {
         @Test
@@ -70,6 +82,13 @@ public class VLexerTest {
         public void testOperatorDivide() throws Exception {
             assertLexerResult("/", "{DIVIDE-C:0}");
             assertLexerResult(" / ", "{DIVIDE-C:1}");
+        }
+
+
+        @Test
+        public void testOperatorVisualDivide() throws Exception {
+            assertLexerResult("--", "{VISUAL_DIVIDE-C:0}");
+            assertLexerResult(" ----------- ", "{VISUAL_DIVIDE-C:1}");
         }
     }
     public static class BasicOperandTest {
