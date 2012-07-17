@@ -71,12 +71,14 @@ Current Status
     result; // "((3 + (quantity x price)) - 10)"
 ```
 
-*All these examples comes from the unit tests (see ```VisualFormulaBuilderTest.DocSampleTest```)*
+*All these examples comes from unit tests (see ```VisualFormulaBuilderTest.DocSampleTest```)*
 
 What's next
 -----------
 
 * Handle parenthesis
-* Improve lexer in order to store location in the token (row and column) - required for the next step
-* Handle graphical division
+* ~~Improve lexer in order to store location in the token (row and column) - required for the next step~~
+* Handle visual division
+    * ~~lexer~~
+    * evaluator
 * Improve API (the current public API is not really user friendly)
