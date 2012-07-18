@@ -202,10 +202,10 @@ public class VisualFormulaBuilderTest {
         @Test
         public void testNaturalPriorities() throws Exception {
             assertFormula("1 + 2 * 3", 1 + 2 * 3);
-//            assertFormula("3 + 2 + 2 * 3 + 2", 3 + 2 + 2 * 3 + 2);
-//            assertFormula("1 + 2 + 3 * 4", 1 + 2 + 3 * 4);
-//            assertFormula("1 + 2 * 3 * 4 + 5", 1 + 2 * 3 * 4 + 5);
-//            assertFormula("1 + 2 * 3 + 4 * 5", 1 + 2 * 3 + 4 * 5);
+            assertFormula("3 + 2 + 2 * 3 + 2", 3 + 2 + 2 * 3 + 2);
+            assertFormula("1 + 2 + 3 * 4", 1 + 2 + 3 * 4);
+            assertFormula("1 + 2 * 3 * 4 + 5", 1 + 2 * 3 * 4 + 5);
+            assertFormula("1 + 2 * 3 + 4 * 5", 1 + 2 * 3 + 4 * 5);
         }
 
 
