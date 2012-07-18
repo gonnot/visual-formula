@@ -43,7 +43,7 @@ Current Status
                      .compile(integerFormula())
                      .variable("quantity", 2)
                      .variable("price", 3)
-                     .execute(integerEvaluator())
+                     .executeWith(integerEvaluator())
     result; // -1
 ```
 
@@ -66,7 +66,7 @@ Current Status
                      .compile(integerFormula())
                      .variable("quantity", 2)
                      .variable("price", 3)
-                     .execute(stringDumpEvaluator())
+                     .executeWith(stringDumpEvaluator())
 
     result; // "((3 + (quantity x price)) - 10)"
 ```

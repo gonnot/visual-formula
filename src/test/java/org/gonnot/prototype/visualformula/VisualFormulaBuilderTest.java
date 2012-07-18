@@ -225,6 +225,15 @@ public class VisualFormulaBuilderTest {
                           "1 + 2 * 3",
                           "         ").equalsTo(1 + 2 * 3);
         }
+
+
+        @Test
+        @Ignore("To be done")
+        public void testOneVisualDivision() throws Exception {
+            assertFormula(" 100     ",
+                          " ----    ",
+                          "  50     ").equalsTo(100 / 50);
+        }
     }
 
 
