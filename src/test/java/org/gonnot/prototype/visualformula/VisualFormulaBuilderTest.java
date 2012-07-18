@@ -119,119 +119,161 @@ public class VisualFormulaBuilderTest {
     public static class ConstantTest {
         @Test
         public void testOneSimpleConstant() throws Exception {
-            assertFormula("5", 5);
+            assertFormula("5").equalsTo(5);
         }
 
 
         @Test
         public void testOneSimpleNegativeConstant() throws Exception {
-            assertFormula("-5", -5);
+            int expected = -5;
+            assertFormula("-5").equalsTo(expected);
         }
 
 
         @Test
         public void testAddTwoConstants() throws Exception {
-            assertFormula("5 + 2", 7);
+            assertFormula("5 + 2").equalsTo(7);
 
-            assertFormula("3 + 5", 8);
+            assertFormula("3 + 5").equalsTo(8);
         }
 
 
         @Test
         public void testAddTwoConstantsWithOneNegative() throws Exception {
-            assertFormula("5 + -2", 3);
+            assertFormula("5 + -2").equalsTo(3);
         }
 
 
         @Test
         public void testAddMoreConstants() throws Exception {
-            assertFormula("5 + 2 + 3", 10);
+            assertFormula("5 + 2 + 3").equalsTo(10);
         }
 
 
         @Test
         public void testMinusTwoConstants() throws Exception {
-            assertFormula("5 - 2", 3);
+            assertFormula("5 - 2").equalsTo(3);
         }
 
 
         @Test
         public void testMinusAndAddMoreConstants() throws Exception {
-            assertFormula("5 - 2 + 10", 13);
+            assertFormula("5 - 2 + 10").equalsTo(13);
 
-            assertFormula("5 + 1 - 10", -4);
+            int expected = -4;
+            assertFormula("5 + 1 - 10").equalsTo(expected);
         }
 
 
         @Test
         public void testMultiplyTwoConstants() throws Exception {
-            assertFormula("5 * 2", 10);
+            assertFormula("5 * 2").equalsTo(10);
         }
 
 
         @Test
         public void testMultiplyThreeConstants() throws Exception {
-            assertFormula("1 * 2 * 3", "((1 x 2) x 3)");
+            assertFormula("1 * 2 * 3").equalsTo("((1 x 2) x 3)");
         }
 
 
         @Test
         public void testMultiplyTwoConstantsAndAdd() throws Exception {
-            assertFormula("5 * 2 + 1", 11);
+            assertFormula("5 * 2 + 1").equalsTo(11);
         }
 
 
         @Test
         public void testDivideTwoConstants() throws Exception {
-            assertFormula("10 / 2", 5);
+            assertFormula("10 / 2").equalsTo(5);
         }
 
 
         @Test
         public void testDivideThreeConstants() throws Exception {
-            assertFormula("30 / 3 / 2", "((30 / 3) / 2)");
+            assertFormula("30 / 3 / 2").equalsTo("((30 / 3) / 2)");
         }
 
 
         @Test
         public void testDivideTwoConstantsAndAdd() throws Exception {
-            assertFormula("100 / 50 + 1", 100 / 50 + 1);
+            assertFormula("100 / 50 + 1").equalsTo(100 / 50 + 1);
         }
     }
     public static class NaturalPrioritiesTest {
         @Test
         public void testNaturalPriorities() throws Exception {
-            assertFormula("1 + 2 * 3", 1 + 2 * 3);
-            assertFormula("3 + 2 + 2 * 3 + 2", 3 + 2 + 2 * 3 + 2);
-            assertFormula("1 + 2 + 3 * 4", 1 + 2 + 3 * 4);
-            assertFormula("1 + 2 * 3 * 4 + 5", 1 + 2 * 3 * 4 + 5);
-            assertFormula("1 + 2 * 3 + 4 * 5", 1 + 2 * 3 + 4 * 5);
+            assertFormula("1 + 2 * 3").equalsTo(1 + 2 * 3);
+            assertFormula("3 + 2 + 2 * 3 + 2").equalsTo(3 + 2 + 2 * 3 + 2);
+            assertFormula("1 + 2 + 3 * 4").equalsTo(1 + 2 + 3 * 4);
+            assertFormula("1 + 2 * 3 * 4 + 5").equalsTo(1 + 2 * 3 * 4 + 5);
+            assertFormula("1 + 2 * 3 + 4 * 5").equalsTo(1 + 2 * 3 + 4 * 5);
         }
 
 
         @Test
         public void testNaturalPrioritiesInString() throws Exception {
-            assertFormula("1 + 2 * 3 * 4 + 5", "((1 + ((2 x 3) x 4)) + 5)");
-            assertFormula("1 + 2 * 3 + 4", "((1 + (2 x 3)) + 4)");
-            assertFormula("1 + 2 * 3 + 4 * 5", "((1 + (2 x 3)) + (4 x 5))");
+            assertFormula("1 + 2 * 3 * 4 + 5").equalsTo("((1 + ((2 x 3) x 4)) + 5)");
+            assertFormula("1 + 2 * 3 + 4").equalsTo("((1 + (2 x 3)) + 4)");
+            assertFormula("1 + 2 * 3 + 4 * 5").equalsTo("((1 + (2 x 3)) + (4 x 5))");
+        }
+    }
+    public static class MultiLineTest {
+        @Test
+        public void testOneFormulaSurroundedByWhiteSpace() throws Exception {
+            assertFormula("         ",
+                          "1 + 2 * 3",
+                          "         ").equalsTo(1 + 2 * 3);
         }
     }
 
 
-    private static void assertFormula(String stringFormula, int expected) {
-        VisualFormula formula = VisualFormulaBuilder.init()
-              ._(stringFormula)
-              .compile();
-
-        assertThat(formula.compute(), describedAs("formula '"
-                                                  + stringFormula
-                                                  + "' has been wrongly parsed <'" + formula.dumpTree() + "'>", is(expected)));
+    private static FormulaAssert assertFormula(String... stringFormula) {
+        return new FormulaAssert(stringFormula);
     }
 
 
-    private static void assertFormula(String input, String expectedTranslation) {
-        assertThat(VisualFormulaBuilder.init()
-                         ._(input)
-                         .compile().dumpTree(), is(expectedTranslation));
+    private static class FormulaAssert {
+        private Integer result;
+        private String formulaInString;
+        private VisualFormula<Integer> formula;
+
+
+        private FormulaAssert(String... stringFormulas) {
+            VisualFormulaBuilder builder = VisualFormulaBuilder.init();
+            for (String formulaRow : stringFormulas) {
+                builder._(formulaRow);
+            }
+            formula = builder.compile(integerFormula());
+            result = formula.executeWith(integerEvaluator());
+
+            formulaInString = toString(stringFormulas);
+        }
+
+
+        public void equalsTo(Integer expected) {
+            assertThat(result, describedAs("formula '" + formulaInString + "' has been wrongly parsed <'" + formula.dumpTree() + "'>", is(expected)));
+        }
+
+
+        public void equalsTo(String expected) {
+            assertThat(formula.dumpTree(), is(expected));
+        }
+
+
+        private static String toString(String[] stringFormulas) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String formulaRow : stringFormulas) {
+                if (stringBuilder.length() > 0) {
+                    stringBuilder.append("\n");
+                }
+                stringBuilder.append(formulaRow);
+            }
+
+            if (stringBuilder.indexOf("\n") != -1) {
+                stringBuilder.insert(0, "\n").append("\n");
+            }
+            return stringBuilder.toString();
+        }
     }
 }

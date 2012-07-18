@@ -21,12 +21,13 @@
 
 package org.gonnot.prototype.visualformula;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
  */
 public class VisualFormulaBuilder {
-    private String lines;
+    private List<String> lines = new ArrayList<String>();
 
 
     public static VisualFormulaBuilder init() {
@@ -36,7 +37,7 @@ public class VisualFormulaBuilder {
 
     @SuppressWarnings({"InstanceMethodNamingConvention"})
     public VisualFormulaBuilder _(String line) {
-        this.lines = line;
+        this.lines.add(line);
         return this;
     }
 
@@ -64,7 +65,11 @@ public class VisualFormulaBuilder {
     @SuppressWarnings({"UnusedParameters"})
     public <T> VisualFormula<T> compile(FormulaType<T> formulaType) {
         VLexer lexer = new VLexer();
-        List<VToken> tokens = lexer.parse(lines);
+
+        List<VToken> tokens = new ArrayList<VToken>();
+        for (String line : lines) {
+            tokens.addAll(lexer.parse(line));
+        }
 
         VParser parser = new VParser();
         VNode node = parser.buildTrees(tokens);
