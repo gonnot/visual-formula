@@ -234,7 +234,6 @@ public class VisualFormulaBuilderTest {
 
 
     private static class FormulaAssert {
-        private Integer result;
         private String formulaInString;
         private VisualFormula<Integer> formula;
 
@@ -245,14 +244,14 @@ public class VisualFormulaBuilderTest {
                 builder._(formulaRow);
             }
             formula = builder.compile(integerFormula());
-            result = formula.executeWith(integerEvaluator());
 
             formulaInString = toString(stringFormulas);
         }
 
 
         public void equalsTo(Integer expected) {
-            assertThat(result, describedAs("formula '" + formulaInString + "' has been wrongly parsed <'" + formula.dumpTree() + "'>", is(expected)));
+            assertThat(formula.executeWith(integerEvaluator()),
+                       describedAs("formula '" + formulaInString + "' has been wrongly parsed <'" + formula.dumpTree() + "'>", is(expected)));
         }
 
 
