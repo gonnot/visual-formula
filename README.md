@@ -6,7 +6,7 @@ Visual-Formula
 Description
 -----------
 
-This library aims to validate the concept of a "*visual mathematical formula evaluator library*".
+This library is a proof of concept to validate the idea of a "*visual mathematical formula evaluator library*" in java.
 
 **Initial concept**
 ```java
