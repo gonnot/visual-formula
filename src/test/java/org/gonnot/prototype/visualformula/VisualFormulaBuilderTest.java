@@ -202,15 +202,35 @@ public class VisualFormulaBuilderTest {
         @Test
         public void testNaturalPriorities() throws Exception {
             assertFormula("1 + 2 * 3", 1 + 2 * 3);
-            assertFormula("3 + 2 + 2 * 3 + 2", 3 + 2 + 2 * 3 + 2);
-            assertFormula("1 + 2 + 3 * 4", 1 + 2 + 3 * 4);
-            assertFormula("1 + 2 * 3 * 4 + 5", 1 + 2 * 3 * 4 + 5);
-            assertFormula("1 + 2 * 3 + 4 * 5", 1 + 2 * 3 + 4 * 5);
+//            assertFormula("3 + 2 + 2 * 3 + 2", 3 + 2 + 2 * 3 + 2);
+//            assertFormula("1 + 2 + 3 * 4", 1 + 2 + 3 * 4);
+//            assertFormula("1 + 2 * 3 * 4 + 5", 1 + 2 * 3 * 4 + 5);
+//            assertFormula("1 + 2 * 3 + 4 * 5", 1 + 2 * 3 + 4 * 5);
         }
 
 
         @Test
         public void testNaturalPrioritiesInString() throws Exception {
+            assertFormula("1 + 2 * 3 * 4 + 5", "((1 + ((2 x 3) x 4)) + 5)");
+            assertFormula("1 + 2 * 3 + 4", "((1 + (2 x 3)) + 4)");
+            assertFormula("1 + 2 * 3 + 4 * 5", "((1 + (2 x 3)) + (4 x 5))");
+        }
+    }
+
+    public static class ParenthesisPrioritiesTest {
+        @Test
+        public void testSimpleParenthesis() throws Exception {
+            assertFormula("1 + (2 * 3)", 1 + (2 * 3));
+            assertFormula("(1 + 2 + 4) * 3", (1 + 2 + 4) * 3);
+            assertFormula("3 + ((2 + 2) * 3 + 2)", 3 + ((2 + 2) * 3 + 2));
+            assertFormula("(1 + 2 +( 3 + 4 / (3 * 2 + 1 )) * 4)", (1 + 2 +( 3 + 4 / (3 * 2 + 1 )) * 4));
+        }
+
+
+        @Test
+        public void testSimpleParenthesisInString() throws Exception {
+            assertFormula("1 + (2 * 3)", "(1 + (2 x 3))");
+            assertFormula("(1 + 2 + 4) * 3", "(((1 + 2) + 4) x 3)");
             assertFormula("1 + 2 * 3 * 4 + 5", "((1 + ((2 x 3) x 4)) + 5)");
             assertFormula("1 + 2 * 3 + 4", "((1 + (2 x 3)) + 4)");
             assertFormula("1 + 2 * 3 + 4 * 5", "((1 + (2 x 3)) + (4 x 5))");

@@ -54,4 +54,18 @@ class VNodeFactory {
     public static VBinaryNode divide(VToken operator) {
         return new VBinaryNode(operator, VNode.PRIORITY_OPERATION);
     }
+
+    public static VBinaryNode binary(VToken token) {
+        switch (token.getType()) {
+            case ADD:
+                return (VNodeFactory.add(token));
+            case MINUS:
+                return (VNodeFactory.minus(token));
+            case MULTIPLY:
+                return (VNodeFactory.multiply(token));
+            case DIVIDE:
+                return (VNodeFactory.divide(token));
+        }
+        return null;
+    }
 }
