@@ -61,6 +61,12 @@ class VLexer {
                     case '/':
                         tokens.add(VToken.divide(column));
                         break;
+                    case '(':
+                        tokens.add(VToken.leftParenthesis(column));
+                        break;
+                    case ')':
+                        tokens.add(VToken.rightParenthesis(column));
+                        break;
                 }
             }
         }
