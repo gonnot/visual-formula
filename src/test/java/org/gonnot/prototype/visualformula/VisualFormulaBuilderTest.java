@@ -69,6 +69,26 @@ public class VisualFormulaBuilderTest {
             assertThat(formula.variable("value", 2).executeWith(integerEvaluator()), is(5));
             assertThat(formula.variable("value", 3).executeWith(integerEvaluator()), is(6));
         }
+
+
+        @Test
+        public void testOneVisualDivision() throws Exception {
+
+            int result = VisualFormulaBuilder.init()
+                  ._("                               ")
+                  ._("            price + serviceFee ")
+                  ._(" external * ------------------ ")
+                  ._("                 quantity      ")
+                  ._("                               ")
+                  .compile(integerFormula())
+                  .variable("external", 1)
+                  .variable("price", 10)
+                  .variable("serviceFee", 90)
+                  .variable("quantity", 2)
+                  .compute();
+
+            assertThat(result, is(50));
+        }
     }
     public static class VariablesTest {
         @Test

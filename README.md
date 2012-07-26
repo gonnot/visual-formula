@@ -71,6 +71,25 @@ Current Status
     result; // "((3 + (quantity x price)) - 10)"
 ```
 
++ It's possible to handle one visual division
+
+```java
+    int result = VisualFormulaBuilder.init()
+          ._("                               ")
+          ._("            price + serviceFee ")
+          ._(" external * ------------------ ")
+          ._("                 quantity      ")
+          ._("                               ")
+          .compile(integerFormula())
+          .variable("external", 1)
+          .variable("price", 10)
+          .variable("serviceFee", 90)
+          .variable("quantity", 2)
+          .compute();
+
+    result; // 50
+```
+
 *All these examples comes from unit tests (see ```VisualFormulaBuilderTest.DocSampleTest```)*
 
 What's next
