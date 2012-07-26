@@ -20,100 +20,91 @@
  */
 
 package org.gonnot.prototype.visualformula;
+
 import org.gonnot.prototype.visualformula.VToken.VTokenType;
+
 /**
  *
  */
 abstract class VNode {
-    static final int BASIC_OPERATION = 0;
-    static final int PRIORITY_OPERATION = 10;
-    protected VToken token;
+  static final int BASIC_OPERATION = 0;
+  static final int PRIORITY_OPERATION = 10;
+  protected VToken token;
 
+  protected VNode(VToken token) {
+    this.token = token;
+  }
 
-    protected VNode(VToken token) {
-        this.token = token;
+  public abstract <T, U> T visit(VNodeVisitor<T, U> visitor);
+
+  static class VOperand extends VNode {
+
+    VOperand(VToken token) {
+      super(token);
     }
 
-
-    public abstract <T, U> T visit(VNodeVisitor<T, U> visitor);
-
-
-    static class VOperand extends VNode {
-
-        VOperand(VToken token) {
-            super(token);
-        }
-
-
-        @Override
-        public <T, U> T visit(VNodeVisitor<T, U> visitor) {
-            if (token.getType() == VTokenType.NUMBER) {
-                return visitor.visitNumber(token.getTokenInString());
-            }
-            else if (token.getType() == VTokenType.VARIABLE) {
-                return visitor.visitVariable(token.getTokenInString());
-            }
-            throw new InternalError("Unknown token found " + token.getType());
-        }
-
-
-        @Override
-        public String toString() {
-            return token.getTokenInString();
-        }
+    @Override
+    public <T, U> T visit(VNodeVisitor<T, U> visitor) {
+      if (token.getType() == VTokenType.NUMBER) {
+        return visitor.visitNumber(token.getTokenInString());
+      }
+      else if (token.getType() == VTokenType.VARIABLE) {
+        return visitor.visitVariable(token.getTokenInString());
+      }
+      throw new InternalError("Unknown token found " + token.getType());
     }
-    static class VBinaryNode extends VNode {
-        private VNode leftOperand;
-        private int priority;
-        private VNode rightOperand;
 
-
-        VBinaryNode(VToken token, int priority) {
-            super(token);
-            this.priority = priority;
-        }
-
-
-        public VNode getLeftOperand() {
-            return leftOperand;
-        }
-
-
-        public void setLeftOperand(VNode leftOperand) {
-            this.leftOperand = leftOperand;
-        }
-
-
-        public VNode getRightOperand() {
-            return rightOperand;
-        }
-
-
-        public void setRightOperand(VNode rightOperand) {
-            this.rightOperand = rightOperand;
-        }
-
-
-        public int getPriority() {
-            return priority;
-        }
-
-
-        @Override
-        public <T, U> T visit(VNodeVisitor<T, U> visitor) {
-            if (token.getType() == VTokenType.ADD) {
-                return visitor.visitAdd(leftOperand, rightOperand);
-            }
-            else if (token.getType() == VTokenType.MINUS) {
-                return visitor.visitMinus(leftOperand, rightOperand);
-            }
-            else if (token.getType() == VTokenType.MULTIPLY) {
-                return visitor.visitMultiply(leftOperand, rightOperand);
-            }
-            else if (token.getType() == VTokenType.DIVIDE) {
-                return visitor.visitDivide(leftOperand, rightOperand);
-            }
-            throw new InternalError("Unknown token found " + token.getType());
-        }
+    @Override
+    public String toString() {
+      return token.getTokenInString();
     }
+  }
+
+  static class VBinaryNode extends VNode {
+    private VNode leftOperand;
+    private int priority;
+    private VNode rightOperand;
+
+    VBinaryNode(VToken token, int priority) {
+      super(token);
+      this.priority = priority;
+    }
+
+    public VNode getLeftOperand() {
+      return leftOperand;
+    }
+
+    public void setLeftOperand(VNode leftOperand) {
+      this.leftOperand = leftOperand;
+    }
+
+    public VNode getRightOperand() {
+      return rightOperand;
+    }
+
+    public void setRightOperand(VNode rightOperand) {
+      this.rightOperand = rightOperand;
+    }
+
+    public int getPriority() {
+      return priority;
+    }
+
+    @Override
+    public <T, U> T visit(VNodeVisitor<T, U> visitor) {
+      if (token.getType() == VTokenType.ADD) {
+        return visitor.visitAdd(leftOperand, rightOperand);
+      }
+      else if (token.getType() == VTokenType.MINUS) {
+        return visitor.visitMinus(leftOperand, rightOperand);
+      }
+      else if (token.getType() == VTokenType.MULTIPLY) {
+        return visitor.visitMultiply(leftOperand, rightOperand);
+      }
+      else if (token.getType() == VTokenType.DIVIDE || token.getType() == VTokenType.VISUAL_DIVIDE) {
+        return visitor.visitDivide(leftOperand, rightOperand);
+      }
+      throw new InternalError("Unknown token found " + token.getType());
+    }
+  }
 }

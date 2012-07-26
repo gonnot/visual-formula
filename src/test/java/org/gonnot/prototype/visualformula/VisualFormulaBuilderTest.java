@@ -228,7 +228,6 @@ public class VisualFormulaBuilderTest {
 
 
         @Test
-        @Ignore("To be done")
         public void testOneVisualDivision() throws Exception {
             assertFormula(" 100     ",
                           " ----    ",

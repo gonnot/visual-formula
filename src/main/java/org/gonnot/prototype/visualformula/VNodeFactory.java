@@ -20,38 +20,42 @@
  */
 
 package org.gonnot.prototype.visualformula;
+
 import org.gonnot.prototype.visualformula.VNode.VBinaryNode;
 import org.gonnot.prototype.visualformula.VNode.VOperand;
+
 /**
  *
  */
 class VNodeFactory {
 
-    private VNodeFactory() {
-    }
+  private VNodeFactory() {
+  }
 
+  public static VNode operand(VToken token) {
+    return new VOperand(token);
+  }
 
-    public static VNode operand(VToken token) {
-        return new VOperand(token);
-    }
+  static VBinaryNode add(VToken operator) {
+    return new VBinaryNode(operator, VNode.BASIC_OPERATION);
+  }
 
+  public static VBinaryNode minus(VToken operator) {
+    return new VBinaryNode(operator, VNode.BASIC_OPERATION);
+  }
 
-    static VBinaryNode add(VToken operator) {
-        return new VBinaryNode(operator, VNode.BASIC_OPERATION);
-    }
+  public static VBinaryNode multiply(VToken operator) {
+    return new VBinaryNode(operator, VNode.PRIORITY_OPERATION);
+  }
 
+  public static VBinaryNode divide(VToken operator) {
+    return new VBinaryNode(operator, VNode.PRIORITY_OPERATION);
+  }
 
-    public static VBinaryNode minus(VToken operator) {
-        return new VBinaryNode(operator, VNode.BASIC_OPERATION);
-    }
-
-
-    public static VBinaryNode multiply(VToken operator) {
-        return new VBinaryNode(operator, VNode.PRIORITY_OPERATION);
-    }
-
-
-    public static VBinaryNode divide(VToken operator) {
-        return new VBinaryNode(operator, VNode.PRIORITY_OPERATION);
-    }
+  public static VBinaryNode visualDivide(VToken operator) {
+    return new VBinaryNode(operator, VNode.BASIC_OPERATION
+                           /* TODO or should it be VNode.PRIORITY_OPERATION
+                            -->  regarding the parsing algo a visual division is like a standard operand*/
+    );
+  }
 }
