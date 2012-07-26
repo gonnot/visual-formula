@@ -27,6 +27,7 @@ class VToken {
     private VTokenType type;
     private int column;
     private String tokenInString;
+    private int row;
 
     static enum VTokenType {
         ADD(true),
@@ -109,6 +110,16 @@ class VToken {
 
     public String getTokenInString() {
         return tokenInString;
+    }
+
+
+    public int getRow() {
+        return row;
+    }
+
+
+    public void setRow(int row) {
+        this.row = row;
     }
 
 

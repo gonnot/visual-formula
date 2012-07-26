@@ -67,8 +67,9 @@ public class VisualFormulaBuilder {
         VLexer lexer = new VLexer();
 
         List<VToken> tokens = new ArrayList<VToken>();
-        for (String line : lines) {
-            tokens.addAll(lexer.parse(line));
+        for (int lineIndex = 0, linesSize = lines.size(); lineIndex < linesSize; lineIndex++) {
+            String line = lines.get(lineIndex);
+            tokens.addAll(lexer.parse(line, lineIndex));
         }
 
         VParser parser = new VParser();

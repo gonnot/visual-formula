@@ -27,41 +27,46 @@ import java.util.List;
  */
 class VLexer {
 
-    public List<VToken> parse(String line) {
+    public List<VToken> parse(String line, int lineIndex) {
         List<VToken> tokens = new ArrayList<VToken>();
         for (int column = 0; column < line.length(); column++) {
             char currentChar = line.charAt(column);
+            VToken builtToken = null;
             if (isNumberChar(currentChar) || isNegativeNumberStart(line, column, currentChar)) {
                 int endColumn = findTokenEndIndex(WHILE_NUMBER, line, column + 1);
-                tokens.add(VToken.number(line.substring(column, endColumn), column));
+                builtToken = VToken.number(line.substring(column, endColumn), column);
                 column = endColumn - 1;
             }
             else if (Character.isJavaIdentifierStart(currentChar)) {
                 int endColumn = findTokenEndIndex(WHILE_VARIABLE, line, column + 1);
-                tokens.add(VToken.variables(line.substring(column, endColumn), column));
+                builtToken = VToken.variables(line.substring(column, endColumn), column);
                 column = endColumn - 1;
             }
             else if ('-' == currentChar && '-' == nextChar(line, column) && lastTokenIsOperator(tokens)) {
                 int endColumn = findTokenEndIndex(WHILE_MINUS, line, column + 1);
-                tokens.add(VToken.visualDivide(column));
+                builtToken = VToken.visualDivide(column);
                 column = endColumn - 1;
             }
             else {
                 //noinspection SwitchStatementWithoutDefaultBranch
                 switch (currentChar) {
                     case '+':
-                        tokens.add(VToken.add(column));
+                        builtToken = VToken.add(column);
                         break;
                     case '-':
-                        tokens.add(VToken.minus(column));
+                        builtToken = VToken.minus(column);
                         break;
                     case '*':
-                        tokens.add(VToken.multiply(column));
+                        builtToken = VToken.multiply(column);
                         break;
                     case '/':
-                        tokens.add(VToken.divide(column));
+                        builtToken = VToken.divide(column);
                         break;
                 }
+            }
+            if (builtToken != null) {
+                builtToken.setRow(lineIndex);
+                tokens.add(builtToken);
             }
         }
         return tokens;

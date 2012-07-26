@@ -125,11 +125,19 @@ public class VLexerTest {
             assertLexerResult(" quantity ", "{VARIABLE(quantity)-C:1}");
         }
     }
+    public static class MiscTest {
+        @Test
+        public void testLineIndex() throws Exception {
+            VLexer lexer = new VLexer();
+            assertThat(lexer.parse("price", 0).get(0).getRow(), is(0));
+            assertThat(lexer.parse("quantity", 10).get(0).getRow(), is(10));
+        }
+    }
 
 
     private static void assertLexerResult(String line, String... expectedTokens) {
         VLexer lexer = new VLexer();
-        List<VToken> tokens = lexer.parse(line);
+        List<VToken> tokens = lexer.parse(line, 0);
         assertThat(convertTokenToString(tokens).toString(), is(Arrays.asList(expectedTokens).toString()));
     }
 

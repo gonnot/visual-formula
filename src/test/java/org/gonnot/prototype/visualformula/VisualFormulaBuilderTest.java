@@ -229,9 +229,42 @@ public class VisualFormulaBuilderTest {
 
         @Test
         public void testOneVisualDivision() throws Exception {
-            assertFormula(" 100     ",
-                          " ----    ",
-                          "  50     ").equalsTo(100 / 50);
+            assertFormula(" 100  ",
+                          " ---- ",
+                          "  50  ").equalsTo(100 / 50);
+        }
+
+
+        @Test
+        public void testOneVisualDivisionWithAnAdditionAsNumerator() throws Exception {
+            assertFormula(" 50 + 50 ",
+                          " ------- ",
+                          "   50    ").equalsTo((50 + 50) / 50);
+        }
+
+
+        @Test
+        public void testAddToOneVisualDivision() throws Exception {
+            assertFormula("     100  ",
+                          " 3 + ---- ",
+                          "      2   ").equalsTo(3 + (100 / 2));
+        }
+
+
+        @Test
+        public void testComplexAddToOneVisualDivision() throws Exception {
+            assertFormula("          90 + 10  ",
+                          " 1 + 2  + -------  ",
+                          "             2     ").equalsTo(1 + 2 + ((90 + 10) / 2));
+        }
+
+
+        @Test
+        @Ignore("next step - take into account range")
+        public void testTwoVisualDivisions() throws Exception {
+            assertFormula(" 10        9   ",
+                          " -- + 2 + ---  ",
+                          " 10        3   ").equalsTo("(((10/10) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
         }
     }
 
@@ -263,8 +296,9 @@ public class VisualFormulaBuilderTest {
         }
 
 
-        public void equalsTo(String expected) {
+        public FormulaAssert equalsTo(String expected) {
             assertThat(formula.dumpTree(), is(expected));
+            return this;
         }
 
 
