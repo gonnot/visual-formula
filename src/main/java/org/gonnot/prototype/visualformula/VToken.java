@@ -25,7 +25,7 @@ package org.gonnot.prototype.visualformula;
  */
 class VToken {
     private VTokenType type;
-    private int column;
+    private int startColumn;
     private String tokenInString;
     private int row;
 
@@ -86,19 +86,19 @@ class VToken {
     }
 
 
-    public static VToken visualDivide(int column) {
-        return new VToken(VTokenType.VISUAL_DIVIDE, column);
+    public static VToken visualDivide(String division, int column) {
+        return new VToken(VTokenType.VISUAL_DIVIDE, division, column);
     }
 
 
-    protected VToken(VTokenType type, int column) {
-        this(type, null, column);
+    protected VToken(VTokenType type, int startColumn) {
+        this(type, null, startColumn);
     }
 
 
-    protected VToken(VTokenType type, String tokenInString, int column) {
+    protected VToken(VTokenType type, String tokenInString, int startColumn) {
         this.type = type;
-        this.column = column;
+        this.startColumn = startColumn;
         this.tokenInString = tokenInString;
     }
 
@@ -123,8 +123,13 @@ class VToken {
     }
 
 
-    public int getColumn() {
-        return column;
+    public int getStartColumn() {
+        return startColumn;
+    }
+
+
+    public int getEndColumn() {
+        return startColumn + (tokenInString != null ? tokenInString.length() : 1);
     }
 
 

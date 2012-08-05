@@ -44,7 +44,7 @@ class VLexer {
             }
             else if ('-' == currentChar && '-' == nextChar(line, column) && lastTokenIsOperator(tokens)) {
                 int endColumn = findTokenEndIndex(WHILE_MINUS, line, column + 1);
-                builtToken = VToken.visualDivide(column);
+                builtToken = VToken.visualDivide(line.substring(column, endColumn), column);
                 column = endColumn - 1;
             }
             else {

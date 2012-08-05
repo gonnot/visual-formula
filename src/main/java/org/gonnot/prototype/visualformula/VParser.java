@@ -68,12 +68,12 @@ class VParser {
                     break;
             }
         }
-        handleVisualDivision();
+        handleVisualDivisions();
         return stack.getFirst();
     }
 
 
-    private void handleVisualDivision() {
+    private void handleVisualDivisions() {
         if (visualDivisions.isEmpty()) {
             return;
         }

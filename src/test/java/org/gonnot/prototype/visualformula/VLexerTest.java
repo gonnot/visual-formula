@@ -22,6 +22,7 @@ package org.gonnot.prototype.visualformula;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.gonnot.prototype.visualformula.VToken.VTokenType;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -145,8 +146,11 @@ public class VLexerTest {
     private static List<String> convertTokenToString(List<VToken> tokens) {
         List<String> result = new ArrayList<String>(tokens.size());
         for (VToken token : tokens) {
-            String value = token.getTokenInString() != null ? "(" + token.getTokenInString() + ")" : "";
-            result.add("{" + token.getType() + value + "-C:" + token.getColumn() + "}");
+            String value = "";
+            if (token.getTokenInString() != null && token.getType() != VTokenType.VISUAL_DIVIDE) {
+                value = "(" + token.getTokenInString() + ")";
+            }
+            result.add("{" + token.getType() + value + "-C:" + token.getStartColumn() + "}");
         }
         return result;
     }

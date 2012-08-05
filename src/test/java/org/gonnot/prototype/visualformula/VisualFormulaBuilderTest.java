@@ -280,11 +280,21 @@ public class VisualFormulaBuilderTest {
 
 
         @Test
-        @Ignore("next step - take into account range")
         public void testTwoVisualDivisions() throws Exception {
             assertFormula(" 10        9   ",
                           " -- + 2 + ---  ",
-                          " 10        3   ").equalsTo("(((10/10) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+                          " 10        3   ").equalsTo("(((10 / 10) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+        }
+
+
+        @Test
+        @Ignore("next step - get more precise row index - isJustAbove should get the min row of the evaluated expression")
+        public void testVisualDivisionsDividingAnotherOne() throws Exception {
+            assertFormula("  10             ",
+                          "  --             ",
+                          "   2         9   ",
+                          " ---- + 2 + ---  ",
+                          "   5         3   ").equalsTo("((((10 / 2) / 5) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
         }
     }
 

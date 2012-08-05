@@ -56,7 +56,9 @@ abstract class VNode {
 
 
     public boolean isWithinNodeBoundary(VNode node) {
-        return true;
+        int startColumn = node.token.getStartColumn();
+        int endColumn = node.token.getEndColumn();
+        return token.getStartColumn() >= startColumn && token.getEndColumn() <= endColumn;
     }
 
 
