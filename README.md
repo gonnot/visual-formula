@@ -90,6 +90,28 @@ Current Status
     result; // 50
 ```
 
++ It's possible to handle n visual division
+
+```java
+    int result = VisualFormulaBuilder.init()
+          ._("                               ")
+          ._("                    serviceFee ")
+          ._("            price + ---------- ")
+          ._("                      index    ")
+          ._(" external * ------------------ ")
+          ._("                 quantity      ")
+          ._("                               ")
+          .compile(integerFormula())
+          .variable("external", 1)
+          .variable("price", 10)
+          .variable("serviceFee", 900)
+          .variable("index", 10)
+          .variable("quantity", 2)
+          .compute();
+
+    result; // 50
+```
+
 *All these examples comes from unit tests (see ```VisualFormulaBuilderTest.DocSampleTest```)*
 
 What's next
@@ -99,5 +121,7 @@ What's next
 * ~~Improve lexer in order to store location in the token (row and column) - required for the next step~~
 * Handle visual division
     * ~~lexer~~
-    * evaluator
+    * parser
+        * ~~handle token range~~
+        * find base formula row index (base formula is the root formula that will be evaluated)
 * Improve API (the current public API is not really user friendly)
