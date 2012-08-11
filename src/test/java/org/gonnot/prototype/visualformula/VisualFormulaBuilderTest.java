@@ -89,6 +89,29 @@ public class VisualFormulaBuilderTest {
 
             assertThat(result, is(50));
         }
+
+
+        @Test
+        public void testTwoVisualDivisions() throws Exception {
+
+            int result = VisualFormulaBuilder.init()
+                  ._("                               ")
+                  ._("                    serviceFee ")
+                  ._("            price + ---------- ")
+                  ._("                      index    ")
+                  ._(" external * ------------------ ")
+                  ._("                 quantity      ")
+                  ._("                               ")
+                  .compile(integerFormula())
+                  .variable("external", 1)
+                  .variable("price", 10)
+                  .variable("serviceFee", 900)
+                  .variable("index", 10)
+                  .variable("quantity", 2)
+                  .compute();
+
+            assertThat(result, is(50));
+        }
     }
     public static class VariablesTest {
         @Test
@@ -237,6 +260,16 @@ public class VisualFormulaBuilderTest {
             assertFormula("1 + 2 * 3 + 4").equalsTo("((1 + (2 x 3)) + 4)");
             assertFormula("1 + 2 * 3 + 4 * 5").equalsTo("((1 + (2 x 3)) + (4 x 5))");
         }
+
+
+        @Test
+        public void testWhenNoBaseFormulaBuildFromTop() throws Exception {
+            assertFormula("  20  ",
+                          " ---- ",
+                          "   2  ",
+                          " ---- ",
+                          "   5  ").equalsTo("((20 / 2) / 5)").equalsTo(20 / 2 / 5);
+        }
     }
     public static class MultiLineTest {
         @Test
@@ -245,8 +278,8 @@ public class VisualFormulaBuilderTest {
                           "1 + 2 * 3",
                           "         ").equalsTo(1 + 2 * 3);
         }
-
-
+    }
+    public static class VisualFormulaTest {
         @Test
         public void testOneVisualDivision() throws Exception {
             assertFormula(" 100  ",
@@ -288,13 +321,60 @@ public class VisualFormulaBuilderTest {
 
 
         @Test
-        @Ignore("next step - get more precise row index - isJustAbove should get the min row of the evaluated expression")
-        public void testVisualDivisionsDividingAnotherOne() throws Exception {
+        public void testVisualDivisionsBelowDividingAnotherOne() throws Exception {
             assertFormula("  10             ",
                           "  --             ",
                           "   2         9   ",
                           " ---- + 2 + ---  ",
                           "   5         3   ").equalsTo("((((10 / 2) / 5) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+        }
+
+
+        @Test
+        public void testVisualDivisionsAboveDividingAnotherOne() throws Exception {
+            assertFormula("   5         9   ",
+                          " ---- + 2 + ---  ",
+                          "  10         3   ",
+                          "  --             ",
+                          "   2             ").equalsTo("(((5 / (10 / 2)) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+        }
+    }
+    public static class DetermineBaseFormulaTest {
+        @Test
+        public void testBaseDivision() throws Exception {
+            assertFormula("  250            ",
+                          "  ---            ",
+                          "   50         9  ",
+                          " ----- + 2 + --- ",
+                          "   10         3  ",
+                          "   --            ",
+                          "    2            ").equalsTo("((((250 / 50) / (10 / 2)) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+        }
+
+
+        @Test
+        @Ignore("Bug to fix")
+        public void testBaseDivisionContainsMaxWhitespace() throws Exception {
+            assertFormula("  250         90 ",
+                          "  ---         -- ",
+                          "   50         10 ",
+                          " ----- + 2 + --- ",
+                          "   10         30 ",
+                          "   --        --- ",
+                          "    2         10 ").equalsTo("((((250 / 50) / (10 / 2)) + 2) + ((90 / 10) / (30 / 10)))").equalsTo(1 + 2 + 3);
+        }
+
+
+        @Test
+        @Ignore("Bug to fix 2")
+        public void testMoreComplex() throws Exception {
+            assertFormula("  250         90       100 ",
+                          "  ---         -- + 1 - --- ",
+                          "   50         10       100 ",
+                          " ----- + 2 + ------------- ",
+                          "   10             30       ",
+                          "   --             --       ",
+                          "    2             10       ").equalsTo("((((250 / 50) / (10 / 2)) + 2) + (((((90 / 10) + 1) - (100 / 100))) / (30 / 10)))").equalsTo(1 + 2 + 3);
         }
     }
 

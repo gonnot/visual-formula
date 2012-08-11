@@ -28,32 +28,32 @@ class VNodeVisitorDump implements VNodeVisitor<String, Object> {
     }
 
 
-    public String visitNumber(String numberInString) {
+    public String visitNumber(String numberInString, VNode currentNode) {
         return numberInString;
     }
 
 
-    public String visitVariable(String variableName) {
+    public String visitVariable(String variableName, VNode currentNode) {
         return variableName;
     }
 
 
-    public String visitAdd(VNode leftOperand, VNode rightOperand) {
+    public String visitAdd(VNode leftOperand, VNode rightOperand, VNode currentNode) {
         return visitBinaryOperator(leftOperand, " + ", rightOperand);
     }
 
 
-    public String visitMinus(VNode leftOperand, VNode rightOperand) {
+    public String visitMinus(VNode leftOperand, VNode rightOperand, VNode currentNode) {
         return visitBinaryOperator(leftOperand, " - ", rightOperand);
     }
 
 
-    public String visitMultiply(VNode leftOperand, VNode rightOperand) {
+    public String visitMultiply(VNode leftOperand, VNode rightOperand, VNode currentNode) {
         return visitBinaryOperator(leftOperand, " x ", rightOperand);
     }
 
 
-    public String visitDivide(VNode leftOperand, VNode rightOperand) {
+    public String visitDivide(VNode leftOperand, VNode rightOperand, VNode currentNode) {
         return visitBinaryOperator(leftOperand, " / ", rightOperand);
     }
 

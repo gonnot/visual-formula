@@ -23,6 +23,8 @@ package org.gonnot.prototype.visualformula;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +40,8 @@ class VParser {
     private VBinaryNode lastOperator = null;
 
 
-    public VNode buildTrees(List<VToken> tokens) {
+    public VNode buildTrees(List<VToken> tokens, List<String> lines) {
+
         for (int i = 0, tokensSize = tokens.size(); i < tokensSize; i++) {
             VToken token = tokens.get(i);
             if (lastOperator != null && lastOperator.getRow() != token.getRow()) {
@@ -68,6 +71,8 @@ class VParser {
                     break;
             }
         }
+
+        sortVisualDivisionByTheDistanceFromTheBaseFormula(lines);
         handleVisualDivisions();
         return stack.getFirst();
     }
@@ -82,16 +87,43 @@ class VParser {
             for (Iterator<VNode> iterator = stack.iterator(); iterator.hasNext(); ) {
                 VNode node = iterator.next();
 
-                if (node.isJustAbove(division) && node.isWithinNodeBoundary(division)) {
+                if (node == division) {
+                    continue;
+                }
+                if (node.isVisuallyJustAbove(division) && node.isWithinNodeBoundary(division)) {
                     iterator.remove();
                     division.setLeftOperand(node);
                 }
-                else if (node.isJustBelow(division) && node.isWithinNodeBoundary(division)) {
+                else if (node.isVisuallyJustBelow(division) && node.isWithinNodeBoundary(division)) {
                     iterator.remove();
                     division.setRightOperand(node);
                 }
+
+                if (division.getLeftOperand() != null && division.getRightOperand() != null) {
+                    break;
+                }
             }
         }
+    }
+
+
+    private void sortVisualDivisionByTheDistanceFromTheBaseFormula(List<String> lines) {
+        final int baseFormulaRow = findBaseFormulaRow(lines);
+        Collections.sort(visualDivisions, new RowDistanceComparator(baseFormulaRow));
+    }
+
+
+    private int findBaseFormulaRow(List<String> lines) {
+        int rowWithMaxNonWhiteChar = 0;
+        int maxLength = 0;
+        for (int i = 0; i < lines.size(); i++) {
+            int currentLength = lines.get(i).replaceAll("\\s", "").length();
+            if (currentLength >= maxLength) {
+                maxLength = currentLength;
+                rowWithMaxNonWhiteChar = i;
+            }
+        }
+        return rowWithMaxNonWhiteChar;
     }
 
 
@@ -146,5 +178,25 @@ class VParser {
             }
         }
         return null;
+    }
+
+
+    private static class RowDistanceComparator implements Comparator<VBinaryNode> {
+        private final int baseFormulaRow;
+
+
+        RowDistanceComparator(int baseFormulaRow) {
+            this.baseFormulaRow = baseFormulaRow;
+        }
+
+
+        public int compare(VBinaryNode nodeA, VBinaryNode nodeB) {
+            return new Integer(distance(baseFormulaRow, nodeB.getRow())).compareTo(distance(baseFormulaRow, nodeA.getRow()));
+        }
+
+
+        private int distance(int baseRow, int currentRow) {
+            return Math.abs(currentRow - baseRow);
+        }
     }
 }

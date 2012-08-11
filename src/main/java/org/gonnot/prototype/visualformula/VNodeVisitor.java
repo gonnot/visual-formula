@@ -27,20 +27,20 @@ public interface VNodeVisitor<VISITOR_RESULT, VARIABLE_TYPE> {
     public void init(FormulaContext<? extends VARIABLE_TYPE> context);
 
 
-    public VISITOR_RESULT visitNumber(String numberInString);
+    public VISITOR_RESULT visitNumber(String numberInString, VNode currentNode);
 
 
-    public VISITOR_RESULT visitVariable(String variableName);
+    public VISITOR_RESULT visitVariable(String variableName, VNode currentNode);
 
 
-    public VISITOR_RESULT visitAdd(VNode leftOperand, VNode rightOperand);
+    public VISITOR_RESULT visitAdd(VNode leftOperand, VNode rightOperand, VNode currentNode);
 
 
-    public VISITOR_RESULT visitMinus(VNode leftOperand, VNode rightOperand);
+    public VISITOR_RESULT visitMinus(VNode leftOperand, VNode rightOperand, VNode currentNode);
 
 
-    public VISITOR_RESULT visitMultiply(VNode leftOperand, VNode rightOperand);
+    public VISITOR_RESULT visitMultiply(VNode leftOperand, VNode rightOperand, VNode currentNode);
 
 
-    public VISITOR_RESULT visitDivide(VNode leftOperand, VNode rightOperand);
+    public VISITOR_RESULT visitDivide(VNode leftOperand, VNode rightOperand, VNode currentNode);
 }

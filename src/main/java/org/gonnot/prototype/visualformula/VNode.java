@@ -37,7 +37,7 @@ abstract class VNode {
     }
 
 
-    public abstract <T, U> T visit(VNodeVisitor<T, U> visitor);
+    public abstract <VISITOR_RESULT, VARIABLE_TYPE> VISITOR_RESULT visit(VNodeVisitor<VISITOR_RESULT, VARIABLE_TYPE> visitor);
 
 
     public int getRow() {
@@ -45,13 +45,14 @@ abstract class VNode {
     }
 
 
-    public boolean isJustAbove(VNode node) {
-        return node.token.getRow() == getRow() + 1;
+    public boolean isVisuallyJustAbove(VNode node) {
+        // TODO beware - not intuitive - index starts from 0 (higher) to n (lower) -> same remarks for isVisuallyJustBelow()
+        return getHighestRow() == node.getRow() - 1;
     }
 
 
-    public boolean isJustBelow(VNode node) {
-        return node.token.getRow() == getRow() - 1;
+    public boolean isVisuallyJustBelow(VNode node) {
+        return getLowestRow() == node.getRow() + 1;
     }
 
 
@@ -59,6 +60,26 @@ abstract class VNode {
         int startColumn = node.token.getStartColumn();
         int endColumn = node.token.getEndColumn();
         return token.getStartColumn() >= startColumn && token.getEndColumn() <= endColumn;
+    }
+
+
+    private int getLowestRow() {
+        return visit(new ExtractRowVisitor(Integer.MAX_VALUE) {
+            @Override
+            protected int compareRow(int left, int right) {
+                return left < right ? left : right;
+            }
+        });
+    }
+
+
+    private int getHighestRow() {
+        return visit(new ExtractRowVisitor(Integer.MIN_VALUE) {
+            @Override
+            protected int compareRow(int left, int right) {
+                return left > right ? left : right;
+            }
+        });
     }
 
 
@@ -72,10 +93,10 @@ abstract class VNode {
         @Override
         public <T, U> T visit(VNodeVisitor<T, U> visitor) {
             if (token.getType() == VTokenType.NUMBER) {
-                return visitor.visitNumber(token.getTokenInString());
+                return visitor.visitNumber(token.getTokenInString(), this);
             }
             else if (token.getType() == VTokenType.VARIABLE) {
-                return visitor.visitVariable(token.getTokenInString());
+                return visitor.visitVariable(token.getTokenInString(), this);
             }
             throw new InternalError("Unknown token found " + token.getType());
         }
@@ -127,16 +148,16 @@ abstract class VNode {
         @Override
         public <T, U> T visit(VNodeVisitor<T, U> visitor) {
             if (token.getType() == VTokenType.ADD) {
-                return visitor.visitAdd(leftOperand, rightOperand);
+                return visitor.visitAdd(leftOperand, rightOperand, this);
             }
             else if (token.getType() == VTokenType.MINUS) {
-                return visitor.visitMinus(leftOperand, rightOperand);
+                return visitor.visitMinus(leftOperand, rightOperand, this);
             }
             else if (token.getType() == VTokenType.MULTIPLY) {
-                return visitor.visitMultiply(leftOperand, rightOperand);
+                return visitor.visitMultiply(leftOperand, rightOperand, this);
             }
             else if (token.getType() == VTokenType.DIVIDE || token.getType() == VTokenType.VISUAL_DIVIDE) {
-                return visitor.visitDivide(leftOperand, rightOperand);
+                return visitor.visitDivide(leftOperand, rightOperand, this);
             }
             throw new InternalError("Unknown token found " + token.getType());
         }
@@ -144,7 +165,7 @@ abstract class VNode {
 
         @Override
         public String toString() {
-            return token.getType().toString();
+            return token.getType().toString() + "(" + getRow() + "," + token.getStartColumn() + "-" + token.getEndColumn() + ")";
         }
     }
 }

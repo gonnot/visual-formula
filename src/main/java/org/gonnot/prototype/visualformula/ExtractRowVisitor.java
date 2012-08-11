@@ -18,50 +18,69 @@
  *    implied. See the License for the specific language governing permissions
  *    and limitations under the License.
  */
-
 package org.gonnot.prototype.visualformula;
 /**
  *
  */
-class VNodeVisitorInteger implements VNodeVisitor<Integer, Integer> {
-    private FormulaContext<? extends Integer> context;
+abstract class ExtractRowVisitor implements VNodeVisitor<Integer, Object> {
+
+    private int rowIndexForNull;
 
 
-    VNodeVisitorInteger() {
+    ExtractRowVisitor(int rowIndexForNull) {
+        this.rowIndexForNull = rowIndexForNull;
     }
 
 
-    public void init(FormulaContext<? extends Integer> formulaContext) {
-        this.context = formulaContext;
+    public void init(FormulaContext formulaContext) {
     }
 
 
     public Integer visitNumber(String numberInString, VNode currentNode) {
-        return Integer.decode(numberInString);
+        return currentNode.getRow();
     }
 
 
     public Integer visitVariable(String variableName, VNode currentNode) {
-        return context.getValueOf(variableName);
+        return currentNode.getRow();
     }
 
 
     public Integer visitAdd(VNode leftOperand, VNode rightOperand, VNode currentNode) {
-        return leftOperand.visit(this) + rightOperand.visit(this);
+        return compareNodesRowIndex(leftOperand, rightOperand, currentNode);
     }
 
 
     public Integer visitMinus(VNode leftOperand, VNode rightOperand, VNode currentNode) {
-        return leftOperand.visit(this) - rightOperand.visit(this);
+        return compareNodesRowIndex(leftOperand, rightOperand, currentNode);
     }
 
 
     public Integer visitMultiply(VNode leftOperand, VNode rightOperand, VNode currentNode) {
-        return leftOperand.visit(this) * rightOperand.visit(this);
+        return compareNodesRowIndex(leftOperand, rightOperand, currentNode);
     }
 
 
     public Integer visitDivide(VNode leftOperand, VNode rightOperand, VNode currentNode) {
-        return leftOperand.visit(this) / rightOperand.visit(this);
+        return compareNodesRowIndex(leftOperand, rightOperand, currentNode);
     }
+
+
+    private Integer compareNodesRowIndex(VNode leftOperand, VNode rightOperand, VNode currentNode) {
+        int left = getRowIndex(leftOperand);
+        int right = getRowIndex(rightOperand);
+        int current = currentNode.getRow();
+        return compareRow(compareRow(left, right), current);
+    }
+
+
+    private Integer getRowIndex(VNode node) {
+        if (node == null) {
+            return rowIndexForNull;
+        }
+        return node.visit(this);
+    }
+
+
+    protected abstract int compareRow(int left, int right);
 }

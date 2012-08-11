@@ -73,7 +73,7 @@ public class VisualFormulaBuilder {
         }
 
         VParser parser = new VParser();
-        VNode node = parser.buildTrees(tokens);
+        VNode node = parser.buildTrees(tokens, lines);
 
         return new VisualFormula<T>(node);
     }
