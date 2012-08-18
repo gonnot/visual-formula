@@ -42,7 +42,7 @@ class VLexer {
                 builtToken = VToken.variables(line.substring(column, endColumn), column);
                 column = endColumn - 1;
             }
-            else if ('-' == currentChar && '-' == nextChar(line, column) && lastTokenIsOperator(tokens)) {
+            else if ('-' == currentChar && '-' == nextChar(line, column) && !nextFollowingIsNumber(line, column)) {
                 int endColumn = findTokenEndIndex(WHILE_MINUS, line, column + 1);
                 builtToken = VToken.visualDivide(line.substring(column, endColumn), column);
                 column = endColumn - 1;
@@ -81,12 +81,12 @@ class VLexer {
     }
 
 
-    private boolean lastTokenIsOperator(List<VToken> tokens) {
-        if (tokens.isEmpty()) {
-            return true;
+    private boolean nextFollowingIsNumber(String line, int column) {
+        if (column + 2 >= line.length()) {
+            return false;
         }
-        VToken vToken = tokens.get(tokens.size() - 1);
-        return vToken.isOperatorInline();
+        char followingNext = line.charAt(column + 2);
+        return followingNext >= '0' && followingNext <= '9';
     }
 
 

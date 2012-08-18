@@ -121,7 +121,7 @@ What's next
 * ~~Improve lexer in order to store location in the token (row and column) - required for the next step~~
 * Handle visual division
     * ~~lexer~~
-    * parser
+    * ~~parser~~
         * ~~handle token range~~
-        * find base formula row index (base formula is the root formula that will be evaluated)
+        * ~~find base formula row index (base formula is the root formula that will be evaluated)~~
 * Improve API (the current public API is not really user friendly)

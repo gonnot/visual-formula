@@ -30,29 +30,13 @@ class VToken {
     private int row;
 
     static enum VTokenType {
-        ADD(true),
-        MINUS(true),
-        MULTIPLY(true),
-        DIVIDE(true),
+        ADD,
+        MINUS,
+        MULTIPLY,
+        DIVIDE,
         VISUAL_DIVIDE,
         VARIABLE,
         NUMBER;
-        private boolean operatorInline;
-
-
-        VTokenType() {
-            this(false);
-        }
-
-
-        VTokenType(boolean operatorInline) {
-            this.operatorInline = operatorInline;
-        }
-
-
-        public boolean isOperatorInline() {
-            return operatorInline;
-        }
     }
 
 
@@ -130,11 +114,6 @@ class VToken {
 
     public int getEndColumn() {
         return startColumn + (tokenInString != null ? tokenInString.length() : 1);
-    }
-
-
-    public boolean isOperatorInline() {
-        return type.isOperatorInline();
     }
 
 

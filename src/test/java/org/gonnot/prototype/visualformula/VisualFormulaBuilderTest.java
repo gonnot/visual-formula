@@ -353,7 +353,6 @@ public class VisualFormulaBuilderTest {
 
 
         @Test
-        @Ignore("Bug to fix")
         public void testBaseDivisionContainsMaxWhitespace() throws Exception {
             assertFormula("  250         90 ",
                           "  ---         -- ",
@@ -366,7 +365,6 @@ public class VisualFormulaBuilderTest {
 
 
         @Test
-        @Ignore("Bug to fix 2")
         public void testMoreComplex() throws Exception {
             assertFormula("  250         90       100 ",
                           "  ---         -- + 1 - --- ",
@@ -374,7 +372,7 @@ public class VisualFormulaBuilderTest {
                           " ----- + 2 + ------------- ",
                           "   10             30       ",
                           "   --             --       ",
-                          "    2             10       ").equalsTo("((((250 / 50) / (10 / 2)) + 2) + (((((90 / 10) + 1) - (100 / 100))) / (30 / 10)))").equalsTo(1 + 2 + 3);
+                          "    2             10       ").equalsTo("((((250 / 50) / (10 / 2)) + 2) + ((((90 / 10) + 1) - (100 / 100)) / (30 / 10)))").equalsTo(1 + 2 + 3);
         }
     }
 

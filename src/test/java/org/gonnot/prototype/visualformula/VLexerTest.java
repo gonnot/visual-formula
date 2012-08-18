@@ -53,8 +53,18 @@ public class VLexerTest {
 
 
         @Test
-        public void testVisualDivide() throws Exception {
+        public void testVisualDivision() throws Exception {
             assertLexerResult("10 * ----- + -20", "{NUMBER(10)-C:0}", "{MULTIPLY-C:3}", "{VISUAL_DIVIDE-C:5}", "{ADD-C:11}", "{NUMBER(-20)-C:13}");
+        }
+
+
+        @Test
+        public void testThreeSeparateFormulas() throws Exception {
+            //                "    4         5   "
+            //                " -------- + ----- "
+            //                "  1           2   "
+            assertLexerResult("  -- + 3     ---  ", "{VISUAL_DIVIDE-C:2}", "{ADD-C:5}", "{NUMBER(3)-C:7}", "{VISUAL_DIVIDE-C:13}");
+            //                "  1           2   "
         }
     }
     public static class BasicOperatorTest {
@@ -80,16 +90,22 @@ public class VLexerTest {
 
 
         @Test
-        public void testOperatorDivide() throws Exception {
+        public void testOperatorDivision() throws Exception {
             assertLexerResult("/", "{DIVIDE-C:0}");
             assertLexerResult(" / ", "{DIVIDE-C:1}");
         }
 
 
         @Test
-        public void testOperatorVisualDivide() throws Exception {
+        public void testOperatorVisualDivisions() throws Exception {
             assertLexerResult("--", "{VISUAL_DIVIDE-C:0}");
             assertLexerResult(" ----------- ", "{VISUAL_DIVIDE-C:1}");
+        }
+
+
+        @Test
+        public void testOperatorTwoVisualDivisions() throws Exception {
+            assertLexerResult(" --- -- ", "{VISUAL_DIVIDE-C:1}, {VISUAL_DIVIDE-C:5}");
         }
     }
     public static class BasicOperandTest {
