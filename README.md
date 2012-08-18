@@ -119,7 +119,7 @@ What's next
 
 * Handle parenthesis
 * ~~Improve lexer in order to store location in the token (row and column) - required for the next step~~
-* Handle visual division
+* ~~Handle visual division~~
     * ~~lexer~~
     * ~~parser~~
         * ~~handle token range~~
