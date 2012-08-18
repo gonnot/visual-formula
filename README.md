@@ -8,7 +8,8 @@ Description
 
 This library is a proof of concept to validate the idea of a "*visual mathematical formula evaluator library*" in java.
 
-**Initial concept**
+#### Initial concept
+
 ```java
     VisualFormula formula = VisualFormulaBuilder.initFormula()
         ._("                           valuation        ")
@@ -22,7 +23,12 @@ This library is a proof of concept to validate the idea of a "*visual mathematic
         ...;
 ```
 
-Work in progress...
+#### Current status
+
+*"Visual" aspects* are completely implemented, still need to add parenthesis support, but the spike is nearly successfully closed.
+
+Before to create a full-blown library, heavy performance tests (memory/speed) will be performed.
+  
 
 Goals
 -----
@@ -32,8 +38,8 @@ Goals
 + Fast
 + Highly open to extension
 
-Current Status
---------------
+Samples
+-------
 
 + The library handles one line formula with variables
 
@@ -125,3 +131,9 @@ What's next
         * ~~handle token range~~
         * ~~find base formula row index (base formula is the root formula that will be evaluated)~~
 * Improve API (the current public API is not really user friendly)
+* Do performance tests
+* Transform the spike into a real library 
+    * Documentation
+    * Website
+    * Deploy on a maven repository
+    
