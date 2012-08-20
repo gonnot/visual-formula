@@ -123,7 +123,7 @@ Samples
 What's next
 -----------
 
-* Handle parenthesis
+* Handle parenthesis -> merge the feature branch
 * ~~Improve lexer in order to store location in the token (row and column) - required for the next step~~
 * ~~Handle visual division~~
     * ~~lexer~~
@@ -131,8 +131,9 @@ What's next
         * ~~handle token range~~
         * ~~find base formula row index (base formula is the root formula that will be evaluated)~~
 * Improve API (the current public API is not really user friendly)
+* Add evaluators: *BigDecimal*, *Double*, etc.
 * Do performance tests
-* Transform the spike into a real library 
+* Transform the spike into a *"production grade" library*
     * Documentation
     * Website
     * Deploy on a maven repository
