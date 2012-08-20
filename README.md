@@ -25,7 +25,7 @@ This library is a proof of concept to validate the idea of a "*visual mathematic
 
 #### Current status
 
-*"Visual" aspects* are completely implemented, still need to add parenthesis support, but the spike is nearly successfully closed.
+*"Visual aspects"* are completely implemented. Despite a lack of parenthesis support (still need to merge the feature branch), the spike is a success.
 
 Before to create a full-blown library, heavy performance tests (memory/speed) will be performed.
   
