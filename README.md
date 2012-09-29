@@ -3,6 +3,8 @@ Visual-Formula
 
 *Makes mathematical formulas more readable in java*
 
+[![Build Status](https://buildhive.cloudbees.com/job/gonnot/job/visual-formula/badge/icon)](https://buildhive.cloudbees.com/job/gonnot/job/visual-formula/)
+
 Description
 -----------
 
