@@ -27,7 +27,7 @@ import java.util.List;
  *
  */
 public class VisualFormulaBuilder {
-    private List<String> lines = new ArrayList<String>();
+    private final List<String> lines = new ArrayList<String>();
 
 
     public static VisualFormulaBuilder init() {
@@ -49,11 +49,6 @@ public class VisualFormulaBuilder {
 
     public static FormulaType<Integer> integerFormula() {
         return new FormulaType<Integer>();
-    }
-
-
-    public static FormulaType<Double> doubleFormula() {
-        return new FormulaType<Double>();
     }
 
 
@@ -96,8 +91,8 @@ public class VisualFormulaBuilder {
     }
 
     public static class VisualFormula<VARIABLE_TYPE> {
-        private VNode node;
-        private FormulaContext<VARIABLE_TYPE> context = new FormulaContext<VARIABLE_TYPE>();
+        private final VNode node;
+        private final FormulaContext<VARIABLE_TYPE> context = new FormulaContext<VARIABLE_TYPE>();
 
 
         public VisualFormula(VNode node) {

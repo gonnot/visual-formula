@@ -24,23 +24,17 @@ package org.gonnot.prototype.visualformula;
  *
  */
 public interface VNodeVisitor<VISITOR_RESULT, VARIABLE_TYPE> {
-    public void init(FormulaContext<? extends VARIABLE_TYPE> context);
+    void init(FormulaContext<? extends VARIABLE_TYPE> context);
 
+    VISITOR_RESULT visitNumber(String numberInString, VNode currentNode);
 
-    public VISITOR_RESULT visitNumber(String numberInString, VNode currentNode);
+    VISITOR_RESULT visitVariable(String variableName, VNode currentNode);
 
+    VISITOR_RESULT visitAdd(VNode leftOperand, VNode rightOperand, VNode currentNode);
 
-    public VISITOR_RESULT visitVariable(String variableName, VNode currentNode);
+    VISITOR_RESULT visitMinus(VNode leftOperand, VNode rightOperand, VNode currentNode);
 
+    VISITOR_RESULT visitMultiply(VNode leftOperand, VNode rightOperand, VNode currentNode);
 
-    public VISITOR_RESULT visitAdd(VNode leftOperand, VNode rightOperand, VNode currentNode);
-
-
-    public VISITOR_RESULT visitMinus(VNode leftOperand, VNode rightOperand, VNode currentNode);
-
-
-    public VISITOR_RESULT visitMultiply(VNode leftOperand, VNode rightOperand, VNode currentNode);
-
-
-    public VISITOR_RESULT visitDivide(VNode leftOperand, VNode rightOperand, VNode currentNode);
+    VISITOR_RESULT visitDivide(VNode leftOperand, VNode rightOperand, VNode currentNode);
 }

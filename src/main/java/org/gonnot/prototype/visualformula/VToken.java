@@ -24,19 +24,19 @@ package org.gonnot.prototype.visualformula;
  *
  */
 class VToken {
-    private VTokenType type;
-    private int startColumn;
-    private String tokenInString;
+    private final VTokenType type;
+    private final int startColumn;
+    private final String tokenInString;
     private int row;
 
-    static enum VTokenType {
+    enum VTokenType {
         ADD,
         MINUS,
         MULTIPLY,
         DIVIDE,
         VISUAL_DIVIDE,
         VARIABLE,
-        NUMBER;
+        NUMBER
     }
 
 

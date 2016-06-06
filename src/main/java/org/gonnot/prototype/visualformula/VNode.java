@@ -110,7 +110,7 @@ abstract class VNode {
 
     static class VBinaryNode extends VNode {
         private VNode leftOperand;
-        private int priority;
+        private final int priority;
         private VNode rightOperand;
 
 

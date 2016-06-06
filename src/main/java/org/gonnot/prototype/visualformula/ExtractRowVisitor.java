@@ -19,12 +19,8 @@
  *    and limitations under the License.
  */
 package org.gonnot.prototype.visualformula;
-/**
- *
- */
 abstract class ExtractRowVisitor implements VNodeVisitor<Integer, Object> {
-
-    private int rowIndexForNull;
+    private final int rowIndexForNull;
 
 
     ExtractRowVisitor(int rowIndexForNull) {

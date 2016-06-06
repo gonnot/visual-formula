@@ -21,11 +21,8 @@
 package org.gonnot.prototype.visualformula;
 import java.util.HashMap;
 import java.util.Map;
-/**
- *
- */
 public class FormulaContext<T> {
-    private Map<String, T> variables = new HashMap<String, T>();
+    private final Map<String, T> variables = new HashMap<String, T>();
 
 
     public void declare(String name, T value) {

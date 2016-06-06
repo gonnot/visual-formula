@@ -117,7 +117,7 @@ class VLexer {
 
 
     private interface Functor {
-        public boolean isPartOfTheToken(char currentChar);
+        boolean isPartOfTheToken(char currentChar);
     }
     private static final Functor WHILE_NUMBER = new Functor() {
         public boolean isPartOfTheToken(char currentChar) {

@@ -40,7 +40,7 @@ public class VisualFormulaBuilderTest {
         public void testStringEvaluator() throws Exception {
             assertThat(VisualFormulaBuilder.init()
                              ._("3 + quantity * price - 10")
-                             .compile(integerFormula())
+                             .compile()
                              .variable("quantity", 2)
                              .variable("price", 3)
                              .executeWith(stringDumpEvaluator()),
@@ -383,8 +383,8 @@ public class VisualFormulaBuilderTest {
 
 
     private static class FormulaAssert {
-        private String formulaInString;
-        private VisualFormula<Integer> formula;
+        private final String formulaInString;
+        private final VisualFormula<Integer> formula;
 
 
         private FormulaAssert(String... stringFormulas) {
@@ -398,13 +398,13 @@ public class VisualFormulaBuilderTest {
         }
 
 
-        public void equalsTo(Integer expected) {
+        void equalsTo(Integer expected) {
             assertThat(formula.executeWith(integerEvaluator()),
                        describedAs("formula '" + formulaInString + "' has been wrongly parsed <'" + formula.dumpTree() + "'>", is(expected)));
         }
 
 
-        public FormulaAssert equalsTo(String expected) {
+        FormulaAssert equalsTo(String expected) {
             assertThat(formula.dumpTree(), is(expected));
             return this;
         }

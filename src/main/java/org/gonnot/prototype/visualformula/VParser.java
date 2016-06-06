@@ -42,8 +42,7 @@ class VParser {
 
     public VNode buildTrees(List<VToken> tokens, List<String> lines) {
 
-        for (int i = 0, tokensSize = tokens.size(); i < tokensSize; i++) {
-            VToken token = tokens.get(i);
+        for (VToken token : tokens) {
             if (lastOperator != null && lastOperator.getRow() != token.getRow()) {
                 lastOperator = null;
             }
@@ -108,7 +107,7 @@ class VParser {
 
 
     private void sortVisualDivisionByTheDistanceFromTheBaseFormula(List<String> lines) {
-        final int baseFormulaRow = findBaseFormulaRow(lines);
+        int baseFormulaRow = findBaseFormulaRow(lines);
         Collections.sort(visualDivisions, new RowDistanceComparator(baseFormulaRow));
     }
 
