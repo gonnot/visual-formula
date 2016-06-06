@@ -25,14 +25,8 @@
     </dependencies>
 
     <!--
-     | Build Settings
-     -->
-    <!--<build></build>-->
-
-    <!--
     | Project Information
     -->
-
     <name>Prototype &gt; visual-formula</name>
     <description>A visual mathematical formula evaluator library</description>
     <inceptionYear>2012</inceptionYear>
@@ -40,7 +34,6 @@
     <!--
     | Environment Information
     -->
-
     <repositories>
         <repository>
             <id>embedded-codjo-official</id>
