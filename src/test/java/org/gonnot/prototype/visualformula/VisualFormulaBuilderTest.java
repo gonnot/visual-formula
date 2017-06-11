@@ -25,7 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import static net.codjo.test.common.matcher.JUnitMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.bigDecimalFormula;
 import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.integerEvaluator;
 import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.integerFormula;
@@ -34,6 +34,7 @@ import static org.gonnot.prototype.visualformula.VisualFormulaBuilder.stringDump
  *
  */
 @RunWith(Enclosed.class)
+@SuppressWarnings("JavacQuirks")
 public class VisualFormulaBuilderTest {
     public static class DocSampleTest {
         @Test
@@ -43,8 +44,8 @@ public class VisualFormulaBuilderTest {
                              .compile()
                              .variable("quantity", 2)
                              .variable("price", 3)
-                             .executeWith(stringDumpEvaluator()),
-                       is("((3 + (quantity x price)) - 10)"));
+                             .executeWith(stringDumpEvaluator()))
+                  .isEqualTo("((3 + (quantity x price)) - 10)");
         }
 
 
@@ -55,8 +56,8 @@ public class VisualFormulaBuilderTest {
                              .compile(integerFormula())
                              .variable("quantity", 2)
                              .variable("price", 3)
-                             .executeWith(integerEvaluator()),
-                       is(-1));
+                             .executeWith(integerEvaluator()))
+                  .isEqualTo(-1);
         }
 
 
@@ -66,8 +67,8 @@ public class VisualFormulaBuilderTest {
                   ._("3 + value")
                   .compile(integerFormula());
 
-            assertThat(formula.variable("value", 2).executeWith(integerEvaluator()), is(5));
-            assertThat(formula.variable("value", 3).executeWith(integerEvaluator()), is(6));
+            assertThat(formula.variable("value", 2).executeWith(integerEvaluator())).isEqualTo(5);
+            assertThat(formula.variable("value", 3).executeWith(integerEvaluator())).isEqualTo(6);
         }
 
 
@@ -87,7 +88,7 @@ public class VisualFormulaBuilderTest {
                   .variable("quantity", 2)
                   .compute();
 
-            assertThat(result, is(50));
+            assertThat(result).isEqualTo(50);
         }
 
 
@@ -110,7 +111,7 @@ public class VisualFormulaBuilderTest {
                   .variable("quantity", 2)
                   .compute();
 
-            assertThat(result, is(50));
+            assertThat(result).isEqualTo(50);
         }
     }
     public static class VariablesTest {
@@ -120,8 +121,8 @@ public class VisualFormulaBuilderTest {
                              ._("exposure")
                              .compile(integerFormula())
                              .variable("exposure", 5)
-                             .executeWith(integerEvaluator()),
-                       is(5));
+                             .executeWith(integerEvaluator()))
+                  .isEqualTo(5);
         }
 
 
@@ -131,8 +132,8 @@ public class VisualFormulaBuilderTest {
                              ._("exposure")
                              .compile(bigDecimalFormula())
                              .variable("exposure", null)
-                             .executeWith(stringDumpEvaluator()),
-                       is("exposure"));
+                             .executeWith(stringDumpEvaluator()))
+                  .isEqualTo("exposure");
         }
 
 
@@ -143,8 +144,8 @@ public class VisualFormulaBuilderTest {
                              ._("-exposure")
                              .compile(integerFormula())
                              .variable("exposure", 5)
-                             .executeWith(integerEvaluator()),
-                       is(-5));
+                             .executeWith(integerEvaluator()))
+                  .isEqualTo(-5);
         }
 
 
@@ -155,8 +156,8 @@ public class VisualFormulaBuilderTest {
                              .compile(integerFormula())
                              .variable("price", 5)
                              .variable("rebate", 2)
-                             .compute(),
-                       is(3));
+                             .compute())
+                  .isEqualTo(3);
         }
     }
     public static class ConstantTest {
@@ -268,7 +269,9 @@ public class VisualFormulaBuilderTest {
                           " ---- ",
                           "   2  ",
                           " ---- ",
-                          "   5  ").equalsTo("((20 / 2) / 5)").equalsTo(20 / 2 / 5);
+                          "   5  ")
+                  .equalsTo("((20 / 2) / 5)")
+                  .equalsTo(20 / 2 / 5);
         }
     }
     public static class MultiLineTest {
@@ -276,7 +279,8 @@ public class VisualFormulaBuilderTest {
         public void testOneFormulaSurroundedByWhiteSpace() throws Exception {
             assertFormula("         ",
                           "1 + 2 * 3",
-                          "         ").equalsTo(1 + 2 * 3);
+                          "         ")
+                  .equalsTo(1 + 2 * 3);
         }
     }
     public static class VisualFormulaTest {
@@ -284,7 +288,8 @@ public class VisualFormulaBuilderTest {
         public void testOneVisualDivision() throws Exception {
             assertFormula(" 100  ",
                           " ---- ",
-                          "  50  ").equalsTo(100 / 50);
+                          "  50  ")
+                  .equalsTo(100 / 50);
         }
 
 
@@ -292,7 +297,8 @@ public class VisualFormulaBuilderTest {
         public void testOneVisualDivisionWithAnAdditionAsNumerator() throws Exception {
             assertFormula(" 50 + 50 ",
                           " ------- ",
-                          "   50    ").equalsTo((50 + 50) / 50);
+                          "   50    ")
+                  .equalsTo((50 + 50) / 50);
         }
 
 
@@ -300,7 +306,8 @@ public class VisualFormulaBuilderTest {
         public void testAddToOneVisualDivision() throws Exception {
             assertFormula("     100  ",
                           " 3 + ---- ",
-                          "      2   ").equalsTo(3 + (100 / 2));
+                          "      2   ")
+                  .equalsTo(3 + (100 / 2));
         }
 
 
@@ -316,7 +323,9 @@ public class VisualFormulaBuilderTest {
         public void testTwoVisualDivisions() throws Exception {
             assertFormula(" 10        9   ",
                           " -- + 2 + ---  ",
-                          " 10        3   ").equalsTo("(((10 / 10) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+                          " 10        3   ")
+                  .equalsTo("(((10 / 10) + 2) + (9 / 3))")
+                  .equalsTo(1 + 2 + 3);
         }
 
 
@@ -326,7 +335,9 @@ public class VisualFormulaBuilderTest {
                           "  --             ",
                           "   2         9   ",
                           " ---- + 2 + ---  ",
-                          "   5         3   ").equalsTo("((((10 / 2) / 5) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+                          "   5         3   ")
+                  .equalsTo("((((10 / 2) / 5) + 2) + (9 / 3))")
+                  .equalsTo(1 + 2 + 3);
         }
 
 
@@ -336,7 +347,9 @@ public class VisualFormulaBuilderTest {
                           " ---- + 2 + ---  ",
                           "  10         3   ",
                           "  --             ",
-                          "   2             ").equalsTo("(((5 / (10 / 2)) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+                          "   2             ")
+                  .equalsTo("(((5 / (10 / 2)) + 2) + (9 / 3))")
+                  .equalsTo(1 + 2 + 3);
         }
     }
     public static class DetermineBaseFormulaTest {
@@ -348,7 +361,9 @@ public class VisualFormulaBuilderTest {
                           " ----- + 2 + --- ",
                           "   10         3  ",
                           "   --            ",
-                          "    2            ").equalsTo("((((250 / 50) / (10 / 2)) + 2) + (9 / 3))").equalsTo(1 + 2 + 3);
+                          "    2            ")
+                  .equalsTo("((((250 / 50) / (10 / 2)) + 2) + (9 / 3))")
+                  .equalsTo(1 + 2 + 3);
         }
 
 
@@ -360,7 +375,9 @@ public class VisualFormulaBuilderTest {
                           " ----- + 2 + --- ",
                           "   10         30 ",
                           "   --        --- ",
-                          "    2         10 ").equalsTo("((((250 / 50) / (10 / 2)) + 2) + ((90 / 10) / (30 / 10)))").equalsTo(1 + 2 + 3);
+                          "    2         10 ")
+                  .equalsTo("((((250 / 50) / (10 / 2)) + 2) + ((90 / 10) / (30 / 10)))")
+                  .equalsTo(1 + 2 + 3);
         }
 
 
@@ -372,7 +389,9 @@ public class VisualFormulaBuilderTest {
                           " ----- + 2 + ------------- ",
                           "   10             30       ",
                           "   --             --       ",
-                          "    2             10       ").equalsTo("((((250 / 50) / (10 / 2)) + 2) + ((((90 / 10) + 1) - (100 / 100)) / (30 / 10)))").equalsTo(1 + 2 + 3);
+                          "    2             10       ")
+                  .equalsTo("((((250 / 50) / (10 / 2)) + 2) + ((((90 / 10) + 1) - (100 / 100)) / (30 / 10)))")
+                  .equalsTo(1 + 2 + 3);
         }
     }
 
@@ -399,13 +418,14 @@ public class VisualFormulaBuilderTest {
 
 
         void equalsTo(Integer expected) {
-            assertThat(formula.executeWith(integerEvaluator()),
-                       describedAs("formula '" + formulaInString + "' has been wrongly parsed <'" + formula.dumpTree() + "'>", is(expected)));
+            assertThat(formula.executeWith(integerEvaluator()))
+                  .as("formula '" + formulaInString + "' has been wrongly parsed <'" + formula.dumpTree() + "'>")
+                  .isEqualTo(expected);
         }
 
 
         FormulaAssert equalsTo(String expected) {
-            assertThat(formula.dumpTree(), is(expected));
+            assertThat(formula.dumpTree()).isEqualTo(expected);
             return this;
         }
 

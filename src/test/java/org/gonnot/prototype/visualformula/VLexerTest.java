@@ -26,10 +26,7 @@ import org.gonnot.prototype.visualformula.VToken.VTokenType;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import static net.codjo.test.common.matcher.JUnitMatchers.*;
-/**
- *
- */
+import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Enclosed.class)
 public class VLexerTest {
     public static class RealSampleTest {
@@ -146,8 +143,8 @@ public class VLexerTest {
         @Test
         public void testLineIndex() throws Exception {
             VLexer lexer = new VLexer();
-            assertThat(lexer.parse("price", 0).get(0).getRow(), is(0));
-            assertThat(lexer.parse("quantity", 10).get(0).getRow(), is(10));
+            assertThat(lexer.parse("price", 0).get(0).getRow()).isEqualTo(0);
+            assertThat(lexer.parse("quantity", 10).get(0).getRow()).isEqualTo(10);
         }
     }
 
@@ -155,7 +152,8 @@ public class VLexerTest {
     private static void assertLexerResult(String line, String... expectedTokens) {
         VLexer lexer = new VLexer();
         List<VToken> tokens = lexer.parse(line, 0);
-        assertThat(convertTokenToString(tokens).toString(), is(Arrays.asList(expectedTokens).toString()));
+        assertThat(convertTokenToString(tokens).toString())
+              .isEqualTo(Arrays.asList(expectedTokens).toString());
     }
 
 
