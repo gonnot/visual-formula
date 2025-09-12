@@ -1,0 +1,16 @@
+name: Java CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: maven:3.9.11-eclipse-temurin-21
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with Maven
+        run: mvn -version && mvn -B test

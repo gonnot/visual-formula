@@ -20,15 +20,17 @@
  */
 
 package org.gonnot.prototype.visualformula;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntPredicate;
 /**
  *
  */
 class VLexer {
 
     public List<VToken> parse(String line, int lineIndex) {
-        List<VToken> tokens = new ArrayList<VToken>();
+        var tokens = new ArrayList<VToken>();
         for (int column = 0; column < line.length(); column++) {
             char currentChar = line.charAt(column);
             VToken builtToken = null;
@@ -48,21 +50,13 @@ class VLexer {
                 column = endColumn - 1;
             }
             else {
-                //noinspection SwitchStatementWithoutDefaultBranch
-                switch (currentChar) {
-                    case '+':
-                        builtToken = VToken.add(column);
-                        break;
-                    case '-':
-                        builtToken = VToken.minus(column);
-                        break;
-                    case '*':
-                        builtToken = VToken.multiply(column);
-                        break;
-                    case '/':
-                        builtToken = VToken.divide(column);
-                        break;
-                }
+                builtToken = switch (currentChar) {
+                    case '+' -> VToken.add(column);
+                    case '-' -> VToken.minus(column);
+                    case '*' -> VToken.multiply(column);
+                    case '/' -> VToken.divide(column);
+                    default -> null;
+                };
             }
             if (builtToken != null) {
                 builtToken.setRow(lineIndex);
@@ -91,47 +85,27 @@ class VLexer {
 
 
     private static boolean isNegativeNumberStart(String line, int column, char currentChar) {
-        //noinspection SimplifiableIfStatement
-        if (column + 1 >= line.length()) {
-            return false;
-        }
-        return ('-' == currentChar && isNumberChar(line.charAt(column + 1)));
+        return column + 1 < line.length() && currentChar == '-' && isNumberChar(line.charAt(column + 1));
     }
 
 
-    private static boolean isNumberChar(char aChar) {
+    private static boolean isNumberChar(int aChar) {
         return Character.isDigit(aChar) || '.' == aChar;
     }
 
 
-    private int findTokenEndIndex(Functor functor, String line, int column) {
+    private int findTokenEndIndex(IntPredicate functor, String line, int column) {
         for (int i = column; i < line.length(); i++) {
             char currentChar = line.charAt(i);
 
-            if (!functor.isPartOfTheToken(currentChar)) {
+            if (!functor.test(currentChar)) {
                 return i;
             }
         }
         return line.length();
     }
 
-
-    private interface Functor {
-        boolean isPartOfTheToken(char currentChar);
-    }
-    private static final Functor WHILE_NUMBER = new Functor() {
-        public boolean isPartOfTheToken(char currentChar) {
-            return isNumberChar(currentChar);
-        }
-    };
-    private static final Functor WHILE_VARIABLE = new Functor() {
-        public boolean isPartOfTheToken(char currentChar) {
-            return Character.isJavaIdentifierPart(currentChar);
-        }
-    };
-    private static final Functor WHILE_MINUS = new Functor() {
-        public boolean isPartOfTheToken(char currentChar) {
-            return '-' == currentChar;
-        }
-    };
+    private static final IntPredicate WHILE_NUMBER = VLexer::isNumberChar;
+    private static final IntPredicate WHILE_VARIABLE = Character::isJavaIdentifierPart;
+    private static final IntPredicate WHILE_MINUS = currentChar -> currentChar == '-';
 }
