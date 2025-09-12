@@ -21,11 +21,8 @@
 package org.gonnot.prototype.visualformula;
 import java.util.LinkedHashMap;
 import java.util.SequencedMap;
-/**
- *
- */
 public class FormulaContext<T> {
-    private SequencedMap<String, T> variables = new LinkedHashMap<>();
+    private final SequencedMap<String, T> variables = new LinkedHashMap<>();
 
     public void declare(String name, T value) {
         variables.putFirst(name, value);
@@ -36,6 +33,6 @@ public class FormulaContext<T> {
     }
 
     public T getFirstValue() {
-        return variables.values().getFirst();
+        return variables.firstEntry().getValue();
     }
 }

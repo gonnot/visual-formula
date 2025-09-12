@@ -36,7 +36,7 @@ public class VisualFormulaBuilder {
 
 
     @SuppressWarnings({"InstanceMethodNamingConvention"})
-    public VisualFormulaBuilder _(String line) {
+    public VisualFormulaBuilder line(String line) {
         this.lines.add(line);
         return this;
     }
