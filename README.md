@@ -12,11 +12,11 @@ This library is a proof of concept to validate the idea of a "*visual mathematic
 
 ```java
     VisualFormula formula = VisualFormulaBuilder.initFormula()
-        ._("                           valuation        ")
-        ._(" amount - quantity * ---------------------- ")
-        ._("                      endQuantity * nominal ")
-        ._("------------------------------------------- ")
-        ._("            beginValuation                  ")
+        .line("                           valuation        ")
+        .line(" amount - quantity * ---------------------- ")
+        .line("                      endQuantity * nominal ")
+        .line("------------------------------------------- ")
+        .line("            beginValuation                  ")
         .compile()
         .variable("valuation", 5)
         .variable("quantity", 10)
@@ -45,7 +45,7 @@ Samples
 
 ```java
     int result = VisualFormulaBuilder.init()
-                     ._("3 + quantity * price - 10")
+                     .line("3 + quantity * price - 10")
                      .compile(integerFormula())
                      .variable("quantity", 2)
                      .variable("price", 3)
@@ -57,7 +57,7 @@ Samples
 
 ```java
     VisualFormula<Integer> formula = VisualFormulaBuilder.init()
-          ._("3 + value")
+          .line("3 + value")
           .compile(integerFormula());
 
     formula.variable("value", 2).executeWith(integerEvaluator()); // is(5)
@@ -68,7 +68,7 @@ Samples
 
 ```java
     String result = VisualFormulaBuilder.init()
-                     ._("3 + quantity * price - 10")
+                     .line("3 + quantity * price - 10")
                      .compile(integerFormula())
                      .variable("quantity", 2)
                      .variable("price", 3)
@@ -81,11 +81,11 @@ Samples
 
 ```java
     int result = VisualFormulaBuilder.init()
-          ._("                               ")
-          ._("            price + serviceFee ")
-          ._(" external * ------------------ ")
-          ._("                 quantity      ")
-          ._("                               ")
+          .line("                               ")
+          .line("            price + serviceFee ")
+          .line(" external * ------------------ ")
+          .line("                 quantity      ")
+          .line("                               ")
           .compile(integerFormula())
           .variable("external", 1)
           .variable("price", 10)
@@ -100,13 +100,13 @@ Samples
 
 ```java
     int result = VisualFormulaBuilder.init()
-          ._("                               ")
-          ._("                    serviceFee ")
-          ._("            price + ---------- ")
-          ._("                      index    ")
-          ._(" external * ------------------ ")
-          ._("                 quantity      ")
-          ._("                               ")
+          .line("                               ")
+          .line("                    serviceFee ")
+          .line("            price + ---------- ")
+          .line("                      index    ")
+          .line(" external * ------------------ ")
+          .line("                 quantity      ")
+          .line("                               ")
           .compile(integerFormula())
           .variable("external", 1)
           .variable("price", 10)

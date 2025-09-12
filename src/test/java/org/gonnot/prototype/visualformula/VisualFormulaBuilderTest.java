@@ -40,7 +40,7 @@ public class VisualFormulaBuilderTest {
         @Test
         public void testStringEvaluator() throws Exception {
             assertThat(VisualFormulaBuilder.init()
-                             ._("3 + quantity * price - 10")
+                             .line("3 + quantity * price - 10")
                              .compile()
                              .variable("quantity", 2)
                              .variable("price", 3)
@@ -52,7 +52,7 @@ public class VisualFormulaBuilderTest {
         @Test
         public void testIntegerEvaluator() throws Exception {
             assertThat(VisualFormulaBuilder.init()
-                             ._("3 + quantity * price - 10")
+                             .line("3 + quantity * price - 10")
                              .compile(integerFormula())
                              .variable("quantity", 2)
                              .variable("price", 3)
@@ -64,7 +64,7 @@ public class VisualFormulaBuilderTest {
         @Test
         public void testTwoConsecutiveCalculation() throws Exception {
             VisualFormula<Integer> formula = VisualFormulaBuilder.init()
-                  ._("3 + value")
+                  .line("3 + value")
                   .compile(integerFormula());
 
             assertThat(formula.variable("value", 2).executeWith(integerEvaluator())).isEqualTo(5);
@@ -76,11 +76,11 @@ public class VisualFormulaBuilderTest {
         public void testOneVisualDivision() throws Exception {
 
             int result = VisualFormulaBuilder.init()
-                  ._("                               ")
-                  ._("            price + serviceFee ")
-                  ._(" external * ------------------ ")
-                  ._("                 quantity      ")
-                  ._("                               ")
+                  .line("                               ")
+                  .line("            price + serviceFee ")
+                  .line(" external * ------------------ ")
+                  .line("                 quantity      ")
+                  .line("                               ")
                   .compile(integerFormula())
                   .variable("external", 1)
                   .variable("price", 10)
@@ -96,13 +96,13 @@ public class VisualFormulaBuilderTest {
         public void testTwoVisualDivisions() throws Exception {
 
             int result = VisualFormulaBuilder.init()
-                  ._("                               ")
-                  ._("                    serviceFee ")
-                  ._("            price + ---------- ")
-                  ._("                      index    ")
-                  ._(" external * ------------------ ")
-                  ._("                 quantity      ")
-                  ._("                               ")
+                  .line("                               ")
+                  .line("                    serviceFee ")
+                  .line("            price + ---------- ")
+                  .line("                      index    ")
+                  .line(" external * ------------------ ")
+                  .line("                 quantity      ")
+                  .line("                               ")
                   .compile(integerFormula())
                   .variable("external", 1)
                   .variable("price", 10)
@@ -118,7 +118,7 @@ public class VisualFormulaBuilderTest {
         @Test
         public void testOneSimpleVariable() throws Exception {
             assertThat(VisualFormulaBuilder.init()
-                             ._("exposure")
+                             .line("exposure")
                              .compile(integerFormula())
                              .variable("exposure", 5)
                              .executeWith(integerEvaluator()))
@@ -129,7 +129,7 @@ public class VisualFormulaBuilderTest {
         @Test
         public void testOneSimpleVariableInString() throws Exception {
             assertThat(VisualFormulaBuilder.init()
-                             ._("exposure")
+                             .line("exposure")
                              .compile(bigDecimalFormula())
                              .variable("exposure", null)
                              .executeWith(stringDumpEvaluator()))
@@ -141,7 +141,7 @@ public class VisualFormulaBuilderTest {
         @Ignore("Not sure that it's a good idea to handle such case")
         public void testOneSimpleNegativeVariable() throws Exception {
             assertThat(VisualFormulaBuilder.init()
-                             ._("-exposure")
+                             .line("-exposure")
                              .compile(integerFormula())
                              .variable("exposure", 5)
                              .executeWith(integerEvaluator()))
@@ -152,7 +152,7 @@ public class VisualFormulaBuilderTest {
         @Test
         public void testMinusOperatorOnVariables() throws Exception {
             assertThat(VisualFormulaBuilder.init()
-                             ._("price - rebate")
+                             .line("price - rebate")
                              .compile(integerFormula())
                              .variable("price", 5)
                              .variable("rebate", 2)
@@ -409,7 +409,7 @@ public class VisualFormulaBuilderTest {
         private FormulaAssert(String... stringFormulas) {
             VisualFormulaBuilder builder = VisualFormulaBuilder.init();
             for (String formulaRow : stringFormulas) {
-                builder._(formulaRow);
+                builder.line(formulaRow);
             }
             formula = builder.compile(integerFormula());
 
