@@ -19,21 +19,23 @@
  *    and limitations under the License.
  */
 package org.gonnot.prototype.visualformula;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.SequencedMap;
 /**
  *
  */
 public class FormulaContext<T> {
-    private Map<String, T> variables = new HashMap<String, T>();
-
+    private SequencedMap<String, T> variables = new LinkedHashMap<>();
 
     public void declare(String name, T value) {
-        variables.put(name, value);
+        variables.putFirst(name, value);
     }
-
 
     public T getValueOf(String name) {
         return variables.get(name);
+    }
+
+    public T getFirstValue() {
+        return variables.values().getFirst();
     }
 }

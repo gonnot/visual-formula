@@ -25,7 +25,8 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import static net.codjo.test.common.matcher.JUnitMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 /**
  *
  */
