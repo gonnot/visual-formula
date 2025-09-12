@@ -92,13 +92,11 @@ abstract class VNode {
 
         @Override
         public <T, U> T visit(VNodeVisitor<T, U> visitor) {
-            if (token.getType() == VTokenType.NUMBER) {
-                return visitor.visitNumber(token.getTokenInString(), this);
-            }
-            else if (token.getType() == VTokenType.VARIABLE) {
-                return visitor.visitVariable(token.getTokenInString(), this);
-            }
-            throw new InternalError("Unknown token found " + token.getType());
+            return switch (token.getType()) {
+                case NUMBER -> visitor.visitNumber(token.getTokenInString(), this);
+                case VARIABLE -> visitor.visitVariable(token.getTokenInString(), this);
+                default -> throw new InternalError("Unknown token found " + token.getType());
+            };
         }
 
 
@@ -147,19 +145,13 @@ abstract class VNode {
 
         @Override
         public <T, U> T visit(VNodeVisitor<T, U> visitor) {
-            if (token.getType() == VTokenType.ADD) {
-                return visitor.visitAdd(leftOperand, rightOperand, this);
-            }
-            else if (token.getType() == VTokenType.MINUS) {
-                return visitor.visitMinus(leftOperand, rightOperand, this);
-            }
-            else if (token.getType() == VTokenType.MULTIPLY) {
-                return visitor.visitMultiply(leftOperand, rightOperand, this);
-            }
-            else if (token.getType() == VTokenType.DIVIDE || token.getType() == VTokenType.VISUAL_DIVIDE) {
-                return visitor.visitDivide(leftOperand, rightOperand, this);
-            }
-            throw new InternalError("Unknown token found " + token.getType());
+            return switch (token.getType()) {
+                case ADD -> visitor.visitAdd(leftOperand, rightOperand, this);
+                case MINUS -> visitor.visitMinus(leftOperand, rightOperand, this);
+                case MULTIPLY -> visitor.visitMultiply(leftOperand, rightOperand, this);
+                case DIVIDE, VISUAL_DIVIDE -> visitor.visitDivide(leftOperand, rightOperand, this);
+                default -> throw new InternalError("Unknown token found " + token.getType());
+            };
         }
 
 

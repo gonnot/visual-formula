@@ -9,6 +9,9 @@
     <groupId>org.gonnot.prototype</groupId>
     <artifactId>visual-formula</artifactId>
     <version>0.1-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -29,4 +32,14 @@
     <name>Prototype &gt; visual-formula</name>
     <description>A visual mathematical formula evaluator library</description>
     <inceptionYear>2012</inceptionYear>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
