@@ -20,15 +20,13 @@
  */
 
 package org.gonnot.prototype.visualformula;
-/**
- *
- */
-class VToken {
-    private VTokenType type;
-    private int column;
-    private String tokenInString;
 
-    static enum VTokenType {
+/**
+ * Token representation using modern Java record features.
+ */
+record VToken(VTokenType type, String tokenInString, int column) {
+
+    enum VTokenType {
         ADD(true, true),
         MINUS(true, true),
         MULTIPLY(true, true),
@@ -38,144 +36,110 @@ class VToken {
         NUMBER,
         LEFT_PARENTHESIS,
         RIGHT_PARENTHESIS;
-        private boolean operatorInline;
-        private boolean operator;
-
+        private final boolean operatorInline;
+        private final boolean operator;
 
         VTokenType() {
             this(false, false);
         }
-
 
         VTokenType(boolean operatorInline, boolean isOperator) {
             this.operatorInline = operatorInline;
             this.operator = isOperator;
         }
 
-
         public boolean isOperatorInline() {
             return operatorInline;
         }
 
-
         private boolean isOperator() {
             return operator;
         }
-
 
         private boolean isOperand() {
             return !operator;
         }
     }
 
-
-    public static VToken number(String number, int column) {
+    static VToken number(String number, int column) {
         return new VToken(VTokenType.NUMBER, number, column);
     }
 
-
-    public static VToken variables(String name, int column) {
+    static VToken variables(String name, int column) {
         return new VToken(VTokenType.VARIABLE, name, column);
     }
 
-
-    public static VToken add(int column) {
-        return new VToken(VTokenType.ADD, column);
+    static VToken add(int column) {
+        return new VToken(VTokenType.ADD, null, column);
     }
 
-
-    public static VToken minus(int column) {
-        return new VToken(VTokenType.MINUS, column);
+    static VToken minus(int column) {
+        return new VToken(VTokenType.MINUS, null, column);
     }
 
-
-    public static VToken multiply(int column) {
-        return new VToken(VTokenType.MULTIPLY, column);
+    static VToken multiply(int column) {
+        return new VToken(VTokenType.MULTIPLY, null, column);
     }
 
-
-    public static VToken divide(int column) {
-        return new VToken(VTokenType.DIVIDE, column);
+    static VToken divide(int column) {
+        return new VToken(VTokenType.DIVIDE, null, column);
     }
 
-
-    public static VToken visualDivide(int column) {
-        return new VToken(VTokenType.VISUAL_DIVIDE, column);
+    static VToken visualDivide(int column) {
+        return new VToken(VTokenType.VISUAL_DIVIDE, null, column);
     }
 
-
-    public static VToken leftParenthesis(int column) {
-        return new VToken(VTokenType.LEFT_PARENTHESIS, column);
+    static VToken leftParenthesis(int column) {
+        return new VToken(VTokenType.LEFT_PARENTHESIS, null, column);
     }
 
-
-    public static VToken rightParenthesis(int column) {
-        return new VToken(VTokenType.RIGHT_PARENTHESIS, column);
+    static VToken rightParenthesis(int column) {
+        return new VToken(VTokenType.RIGHT_PARENTHESIS, null, column);
     }
 
-
-    protected VToken(VTokenType type, int column) {
+    VToken(VTokenType type, int column) {
         this(type, null, column);
     }
 
-
-    protected VToken(VTokenType type, String tokenInString, int column) {
-        this.type = type;
-        this.column = column;
-        this.tokenInString = tokenInString;
-    }
-
-
-    public VTokenType getType() {
+    VTokenType getType() {
         return type;
     }
 
-
-    public String getTokenInString() {
+    String getTokenInString() {
         return tokenInString;
     }
 
-
-    public int getColumn() {
+    int getColumn() {
         return column;
     }
 
-
-    public boolean isOperatorInline() {
+    boolean isOperatorInline() {
         return type.isOperatorInline();
     }
 
-
-    public boolean isOperator() {
-        return getType().isOperator();
+    boolean isOperator() {
+        return type.isOperator();
     }
 
-
-    public boolean isOperand() {
-        return getType().isOperand();
+    boolean isOperand() {
+        return type.isOperand();
     }
-
 
     @Override
     public String toString() {
         return "token{" + type + (tokenInString != null ? tokenInString : "") + "}";
     }
 
-
     //TODO[Refactoring] AM: pas tres content du nom de la methode ni de l'endroit pour le mettre...
-    public boolean preceeds(VToken token) {
+    boolean preceeds(VToken token) {
         return precedence() >= token.precedence();
     }
 
-
     private int precedence() {
-        int precedence = 0;
-        if (VTokenType.ADD.equals(getType()) || VTokenType.MINUS.equals(getType())) {
-            precedence = 1;
-        }
-        else if (VTokenType.MULTIPLY.equals(getType()) || VTokenType.DIVIDE.equals(getType())) {
-            precedence = 2;
-        }
-        return precedence;
+        return switch (type) {
+            case ADD, MINUS -> 1;
+            case MULTIPLY, DIVIDE -> 2;
+            default -> 0;
+        };
     }
 }

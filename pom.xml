@@ -9,25 +9,51 @@
     <groupId>org.gonnot.prototype</groupId>
     <artifactId>visual-formula</artifactId>
     <version>0.1-SNAPSHOT</version>
+
+    <prerequisites>
+        <maven>3.9.0</maven>
+    </prerequisites>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+    </properties>
+
     <dependencies>
         <dependency>
-            <groupId>net.codjo.test</groupId>
-            <artifactId>codjo-test-common</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
             <scope>test</scope>
-            <version>3.60</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>dumbster</groupId>
-                    <artifactId>dumbster</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <!--
      | Build Settings
      -->
-    <!--<build></build>-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+            </plugin>
+        </plugins>
+    </build>
 
     <!--
     | Project Information
@@ -37,18 +63,5 @@
     <description>A visual mathematical formula evaluator library</description>
     <inceptionYear>2012</inceptionYear>
 
-    <!--
-    | Environment Information
-    -->
-
-    <repositories>
-        <repository>
-            <id>embedded-codjo-official</id>
-            <url>http://repo.codjo.net/maven2/inhouse</url>
-        </repository>
-        <repository>
-            <id>embedded-codjo-official-extended</id>
-            <url>http://repo.codjo.net/maven2/external</url>
-        </repository>
-    </repositories>
 </project>
+

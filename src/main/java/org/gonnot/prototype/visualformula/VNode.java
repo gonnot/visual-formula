@@ -47,13 +47,11 @@ abstract class VNode {
 
         @Override
         public <T, U> T visit(VNodeVisitor<T, U> visitor) {
-            if (token.getType() == VTokenType.NUMBER) {
-                return visitor.visitNumber(token.getTokenInString());
-            }
-            else if (token.getType() == VTokenType.VARIABLE) {
-                return visitor.visitVariable(token.getTokenInString());
-            }
-            throw new InternalError("Unknown token found " + token.getType());
+            return switch (token.getType()) {
+                case NUMBER -> visitor.visitNumber(token.getTokenInString());
+                case VARIABLE -> visitor.visitVariable(token.getTokenInString());
+                default -> throw new InternalError("Unknown token found " + token.getType());
+            };
         }
 
 
@@ -101,19 +99,13 @@ abstract class VNode {
 
         @Override
         public <T, U> T visit(VNodeVisitor<T, U> visitor) {
-            if (token.getType() == VTokenType.ADD) {
-                return visitor.visitAdd(leftOperand, rightOperand);
-            }
-            else if (token.getType() == VTokenType.MINUS) {
-                return visitor.visitMinus(leftOperand, rightOperand);
-            }
-            else if (token.getType() == VTokenType.MULTIPLY) {
-                return visitor.visitMultiply(leftOperand, rightOperand);
-            }
-            else if (token.getType() == VTokenType.DIVIDE) {
-                return visitor.visitDivide(leftOperand, rightOperand);
-            }
-            throw new InternalError("Unknown token found " + token.getType());
+            return switch (token.getType()) {
+                case ADD -> visitor.visitAdd(leftOperand, rightOperand);
+                case MINUS -> visitor.visitMinus(leftOperand, rightOperand);
+                case MULTIPLY -> visitor.visitMultiply(leftOperand, rightOperand);
+                case DIVIDE -> visitor.visitDivide(leftOperand, rightOperand);
+                default -> throw new InternalError("Unknown token found " + token.getType());
+            };
         }
     }
 }
