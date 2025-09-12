@@ -8,6 +8,8 @@ Description
 
 This library is a proof of concept to validate the idea of a "*visual mathematical formula evaluator library*" in java.
 
+The project targets **JDK 21** and builds with **Maven 3.9+**.
+
 #### Initial concept
 
 ```java
