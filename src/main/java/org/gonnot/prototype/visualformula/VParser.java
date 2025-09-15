@@ -190,7 +190,9 @@ class VParser {
 
 
         public int compare(VBinaryNode nodeA, VBinaryNode nodeB) {
-            return new Integer(distance(baseFormulaRow, nodeB.getRow())).compareTo(distance(baseFormulaRow, nodeA.getRow()));
+            return Integer.compare(
+                    distance(baseFormulaRow, nodeB.getRow()),
+                    distance(baseFormulaRow, nodeA.getRow()));
         }
 
 
