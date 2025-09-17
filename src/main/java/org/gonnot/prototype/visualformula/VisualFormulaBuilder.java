@@ -20,47 +20,43 @@
  */
 
 package org.gonnot.prototype.visualformula;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  */
 public class VisualFormulaBuilder {
-    private final List<String> lines = new ArrayList<String>();
-
+    private final List<String> lines = new ArrayList<>();
 
     public static VisualFormulaBuilder init() {
         return new VisualFormulaBuilder();
     }
-
 
     public VisualFormulaBuilder line(String line) {
         this.lines.add(line);
         return this;
     }
 
-
     public VisualFormula<Integer> compile() {
         return compile(integerFormula());
     }
 
-
     public static FormulaType<Integer> integerFormula() {
-        return new FormulaType<Integer>();
+        return new FormulaType<>();
     }
-
 
     public static FormulaType<BigDecimal> bigDecimalFormula() {
-        return new FormulaType<BigDecimal>();
+        return new FormulaType<>();
     }
 
-
-    @SuppressWarnings({"UnusedParameters"})
+    @SuppressWarnings({"UnusedParameters", "unused"})
     public <T> VisualFormula<T> compile(FormulaType<T> formulaType) {
         VLexer lexer = new VLexer();
 
-        List<VToken> tokens = new ArrayList<VToken>();
+        List<VToken> tokens = new ArrayList<>();
         for (int lineIndex = 0, linesSize = lines.size(); lineIndex < linesSize; lineIndex++) {
             String line = lines.get(lineIndex);
             tokens.addAll(lexer.parse(line, lineIndex));
@@ -69,19 +65,16 @@ public class VisualFormulaBuilder {
         VParser parser = new VParser();
         VNode node = parser.buildTrees(tokens, lines);
 
-        return new VisualFormula<T>(node);
+        return new VisualFormula<>(node);
     }
-
 
     public static VNodeVisitor<Integer, Integer> integerEvaluator() {
         return new VNodeVisitorInteger();
     }
 
-
     public static VNodeVisitor<String, Object> stringDumpEvaluator() {
         return new VNodeVisitorDump();
     }
-
 
     @SuppressWarnings({"UnusedDeclaration"})
     public static class FormulaType<T> {
@@ -91,13 +84,11 @@ public class VisualFormulaBuilder {
 
     public static class VisualFormula<VARIABLE_TYPE> {
         private final VNode node;
-        private final FormulaContext<VARIABLE_TYPE> context = new FormulaContext<VARIABLE_TYPE>();
+        private final FormulaContext<VARIABLE_TYPE> context = new FormulaContext<>();
 
-
-        public VisualFormula(VNode node) {
+        VisualFormula(VNode node) {
             this.node = node;
         }
-
 
         @SuppressWarnings({"unchecked"})
         public Integer compute() {
@@ -105,17 +96,14 @@ public class VisualFormulaBuilder {
             return executeWith((VNodeVisitor<Integer, ? super VARIABLE_TYPE>)integerEvaluator());
         }
 
-
         public <T> T executeWith(VNodeVisitor<T, ? super VARIABLE_TYPE> visitor) {
             visitor.init(context);
             return node.visit(visitor);
         }
 
-
         public String dumpTree() {
             return node.visit(stringDumpEvaluator());
         }
-
 
         public VisualFormula<VARIABLE_TYPE> variable(String name, VARIABLE_TYPE value) {
             context.declare(name, value);

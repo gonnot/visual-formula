@@ -19,44 +19,44 @@
  *    and limitations under the License.
  */
 package org.gonnot.prototype.visualformula;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 import org.gonnot.prototype.visualformula.VToken.VTokenType;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(Enclosed.class)
 public class VLexerTest {
     public static class RealSampleTest {
         @Test
-        public void testOneSimpleAddition() throws Exception {
+        public void testOneSimpleAddition() {
             assertLexerResult("10+20", "{NUMBER(10)-C:0}", "{ADD-C:2}", "{NUMBER(20)-C:3}");
             assertLexerResult("10 + 20", "{NUMBER(10)-C:0}", "{ADD-C:3}", "{NUMBER(20)-C:5}");
         }
 
-
         @Test
-        public void testOneSimpleMultiplication() throws Exception {
+        public void testOneSimpleMultiplication() {
             assertLexerResult("10*-20", "{NUMBER(10)-C:0}", "{MULTIPLY-C:2}", "{NUMBER(-20)-C:3}");
         }
 
-
         @Test
-        public void testRemoveNegativeNumber() throws Exception {
+        public void testRemoveNegativeNumber() {
             assertLexerResult("10--20", "{NUMBER(10)-C:0}", "{MINUS-C:2}", "{NUMBER(-20)-C:3}");
         }
 
-
         @Test
-        public void testVisualDivision() throws Exception {
+        public void testVisualDivision() {
             assertLexerResult("10 * ----- + -20", "{NUMBER(10)-C:0}", "{MULTIPLY-C:3}", "{VISUAL_DIVIDE-C:5}", "{ADD-C:11}", "{NUMBER(-20)-C:13}");
         }
 
-
         @Test
-        public void testThreeSeparateFormulas() throws Exception {
+        public void testThreeSeparateFormulas() {
             //                "    4         5   "
             //                " -------- + ----- "
             //                "  1           2   "
@@ -64,101 +64,93 @@ public class VLexerTest {
             //                "  1           2   "
         }
     }
+
     public static class BasicOperatorTest {
         @Test
-        public void testOperatorPlus() throws Exception {
+        public void testOperatorPlus() {
             assertLexerResult("+", "{ADD-C:0}");
             assertLexerResult(" + ", "{ADD-C:1}");
         }
 
-
         @Test
-        public void testOperatorMinus() throws Exception {
+        public void testOperatorMinus() {
             assertLexerResult("-", "{MINUS-C:0}");
             assertLexerResult(" - ", "{MINUS-C:1}");
         }
 
-
         @Test
-        public void testOperatorMultiply() throws Exception {
+        public void testOperatorMultiply() {
             assertLexerResult("*", "{MULTIPLY-C:0}");
             assertLexerResult(" * ", "{MULTIPLY-C:1}");
         }
 
-
         @Test
-        public void testOperatorDivision() throws Exception {
+        public void testOperatorDivision() {
             assertLexerResult("/", "{DIVIDE-C:0}");
             assertLexerResult(" / ", "{DIVIDE-C:1}");
         }
 
-
         @Test
-        public void testOperatorVisualDivisions() throws Exception {
+        public void testOperatorVisualDivisions() {
             assertLexerResult("--", "{VISUAL_DIVIDE-C:0}");
             assertLexerResult(" ----------- ", "{VISUAL_DIVIDE-C:1}");
         }
 
-
         @Test
-        public void testOperatorTwoVisualDivisions() throws Exception {
+        public void testOperatorTwoVisualDivisions() {
             assertLexerResult(" --- -- ", "{VISUAL_DIVIDE-C:1}, {VISUAL_DIVIDE-C:5}");
         }
     }
+
     public static class BasicOperandTest {
         @Test
-        public void testNumber() throws Exception {
+        public void testNumber() {
             assertLexerResult("1", "{NUMBER(1)-C:0}");
         }
 
-
         @Test
-        public void testNegativeNumber() throws Exception {
+        public void testNegativeNumber() {
             assertLexerResult("-1", "{NUMBER(-1)-C:0}");
         }
 
-
         @Test
-        public void testBigNumber() throws Exception {
+        public void testBigNumber() {
             assertLexerResult("12345", "{NUMBER(12345)-C:0}");
             assertLexerResult("12345  ", "{NUMBER(12345)-C:0}");
             assertLexerResult("  12345  ", "{NUMBER(12345)-C:2}");
         }
 
-
         @Test
-        public void testNumberFloat() throws Exception {
+        public void testNumberFloat() {
             assertLexerResult("1.5", "{NUMBER(1.5)-C:0}");
             assertLexerResult("1.", "{NUMBER(1.)-C:0}");
         }
 
-
         @Test
-        public void testVariable() throws Exception {
+        public void testVariable() {
             assertLexerResult("quantity", "{VARIABLE(quantity)-C:0}");
             assertLexerResult(" quantity ", "{VARIABLE(quantity)-C:1}");
         }
     }
+
     public static class MiscTest {
         @Test
-        public void testLineIndex() throws Exception {
+        public void testLineIndex() {
             VLexer lexer = new VLexer();
-            assertThat(lexer.parse("price", 0).get(0).getRow()).isEqualTo(0);
-            assertThat(lexer.parse("quantity", 10).get(0).getRow()).isEqualTo(10);
+            assertThat(lexer.parse("price", 0).getFirst().getRow()).isEqualTo(0);
+            assertThat(lexer.parse("quantity", 10).getFirst().getRow()).isEqualTo(10);
         }
     }
-
 
     private static void assertLexerResult(String line, String... expectedTokens) {
         VLexer lexer = new VLexer();
         List<VToken> tokens = lexer.parse(line, 0);
         assertThat(convertTokenToString(tokens).toString())
-              .isEqualTo(Arrays.asList(expectedTokens).toString());
+          .isEqualTo(Arrays.asList(expectedTokens).toString());
     }
 
-
     private static List<String> convertTokenToString(List<VToken> tokens) {
-        List<String> result = new ArrayList<String>(tokens.size());
+        List<String> result = new ArrayList<>(tokens.size());
         for (VToken token : tokens) {
             String value = "";
             if (token.getTokenInString() != null && token.getType() != VTokenType.VISUAL_DIVIDE) {

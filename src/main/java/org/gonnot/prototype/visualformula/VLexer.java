@@ -24,6 +24,7 @@ package org.gonnot.prototype.visualformula;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntPredicate;
+
 /**
  *
  */
@@ -33,7 +34,7 @@ class VLexer {
         var tokens = new ArrayList<VToken>();
         for (int column = 0; column < line.length(); column++) {
             char currentChar = line.charAt(column);
-            VToken builtToken = null;
+            VToken builtToken;
             if (isNumberChar(currentChar) || isNegativeNumberStart(line, column, currentChar)) {
                 int endColumn = findTokenEndIndex(WHILE_NUMBER, line, column + 1);
                 builtToken = VToken.number(line.substring(column, endColumn), column);
@@ -66,14 +67,12 @@ class VLexer {
         return tokens;
     }
 
-
     private char nextChar(String line, int column) {
         if (column + 1 >= line.length()) {
             return 0;
         }
         return line.charAt(column + 1);
     }
-
 
     private boolean nextFollowingIsNumber(String line, int column) {
         if (column + 2 >= line.length()) {
@@ -83,16 +82,13 @@ class VLexer {
         return followingNext >= '0' && followingNext <= '9';
     }
 
-
     private static boolean isNegativeNumberStart(String line, int column, char currentChar) {
         return column + 1 < line.length() && currentChar == '-' && isNumberChar(line.charAt(column + 1));
     }
 
-
     private static boolean isNumberChar(int aChar) {
         return Character.isDigit(aChar) || '.' == aChar;
     }
-
 
     private int findTokenEndIndex(IntPredicate functor, String line, int column) {
         for (int i = column; i < line.length(); i++) {

@@ -21,14 +21,9 @@
 
 package org.gonnot.prototype.visualformula;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.List;
 import org.gonnot.prototype.visualformula.VNode.VBinaryNode;
+
+import java.util.*;
 
 /**
  *
@@ -38,7 +33,6 @@ class VParser {
     private final Deque<VBinaryNode> allOperators = new ArrayDeque<VBinaryNode>();
     private final List<VBinaryNode> visualDivisions = new ArrayList<VBinaryNode>();
     private VBinaryNode lastOperator = null;
-
 
     public VNode buildTrees(List<VToken> tokens, List<String> lines) {
 
@@ -76,7 +70,6 @@ class VParser {
         return stack.getFirst();
     }
 
-
     private void handleVisualDivisions() {
         if (visualDivisions.isEmpty()) {
             return;
@@ -105,12 +98,10 @@ class VParser {
         }
     }
 
-
     private void sortVisualDivisionByTheDistanceFromTheBaseFormula(List<String> lines) {
         int baseFormulaRow = findBaseFormulaRow(lines);
         Collections.sort(visualDivisions, new RowDistanceComparator(baseFormulaRow));
     }
-
 
     private int findBaseFormulaRow(List<String> lines) {
         int rowWithMaxNonWhiteChar = 0;
@@ -125,7 +116,6 @@ class VParser {
         return rowWithMaxNonWhiteChar;
     }
 
-
     private void handleOperandNode(VNode number) {
         if (lastOperator == null || lastOperator.getRightOperand() != null) {
             stack.push(number);
@@ -134,7 +124,6 @@ class VParser {
             lastOperator.setRightOperand(number);
         }
     }
-
 
     private void handleNode(VBinaryNode binaryNode) {
         if (lastOperator == null) {
@@ -169,7 +158,6 @@ class VParser {
         allOperators.add(lastOperator);
     }
 
-
     private static VBinaryNode findParentNode(VBinaryNode operator, Deque<VBinaryNode> lastOperators) {
         for (VBinaryNode node : lastOperators) {
             if (node.getLeftOperand() == operator || node.getRightOperand() == operator) {
@@ -179,22 +167,17 @@ class VParser {
         return null;
     }
 
-
     private static class RowDistanceComparator implements Comparator<VBinaryNode> {
         private final int baseFormulaRow;
-
 
         RowDistanceComparator(int baseFormulaRow) {
             this.baseFormulaRow = baseFormulaRow;
         }
 
-
         public int compare(VBinaryNode nodeA, VBinaryNode nodeB) {
-            return Integer.compare(
-                    distance(baseFormulaRow, nodeB.getRow()),
-                    distance(baseFormulaRow, nodeA.getRow()));
+            return Integer.compare(distance(baseFormulaRow, nodeB.getRow()),
+                                   distance(baseFormulaRow, nodeA.getRow()));
         }
-
 
         private int distance(int baseRow, int currentRow) {
             return Math.abs(currentRow - baseRow);

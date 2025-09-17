@@ -19,16 +19,16 @@
  *    and limitations under the License.
  */
 package org.gonnot.prototype.visualformula;
+
 import java.util.HashMap;
 import java.util.Map;
-public class FormulaContext<T> {
-    private final Map<String, T> variables = new HashMap<String, T>();
 
+public class FormulaContext<T> {
+    private final Map<String, T> variables = new HashMap<>();
 
     public void declare(String name, T value) {
         variables.put(name, value);
     }
-
 
     public T getValueOf(String name) {
         return variables.get(name);

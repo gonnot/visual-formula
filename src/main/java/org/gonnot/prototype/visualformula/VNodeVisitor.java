@@ -20,6 +20,7 @@
  */
 
 package org.gonnot.prototype.visualformula;
+
 /**
  *
  */

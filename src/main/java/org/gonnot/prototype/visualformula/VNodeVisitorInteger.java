@@ -20,46 +20,39 @@
  */
 
 package org.gonnot.prototype.visualformula;
+
 /**
  *
  */
 class VNodeVisitorInteger implements VNodeVisitor<Integer, Integer> {
     private FormulaContext<? extends Integer> context;
 
-
     VNodeVisitorInteger() {
     }
-
 
     public void init(FormulaContext<? extends Integer> formulaContext) {
         this.context = formulaContext;
     }
 
-
     public Integer visitNumber(String numberInString, VNode currentNode) {
         return Integer.decode(numberInString);
     }
-
 
     public Integer visitVariable(String variableName, VNode currentNode) {
         return context.getValueOf(variableName);
     }
 
-
     public Integer visitAdd(VNode leftOperand, VNode rightOperand, VNode currentNode) {
         return leftOperand.visit(this) + rightOperand.visit(this);
     }
-
 
     public Integer visitMinus(VNode leftOperand, VNode rightOperand, VNode currentNode) {
         return leftOperand.visit(this) - rightOperand.visit(this);
     }
 
-
     public Integer visitMultiply(VNode leftOperand, VNode rightOperand, VNode currentNode) {
         return leftOperand.visit(this) * rightOperand.visit(this);
     }
-
 
     public Integer visitDivide(VNode leftOperand, VNode rightOperand, VNode currentNode) {
         return leftOperand.visit(this) / rightOperand.visit(this);

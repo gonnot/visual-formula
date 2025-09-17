@@ -21,8 +21,6 @@
 
 package org.gonnot.prototype.visualformula;
 
-import org.gonnot.prototype.visualformula.VToken.VTokenType;
-
 /**
  *
  */
@@ -31,30 +29,24 @@ abstract class VNode {
     static final int PRIORITY_OPERATION = 10;
     protected VToken token;
 
-
     protected VNode(VToken token) {
         this.token = token;
     }
 
-
     public abstract <VISITOR_RESULT, VARIABLE_TYPE> VISITOR_RESULT visit(VNodeVisitor<VISITOR_RESULT, VARIABLE_TYPE> visitor);
-
 
     public int getRow() {
         return token.getRow();
     }
-
 
     public boolean isVisuallyJustAbove(VNode node) {
         // TODO beware - not intuitive - index starts from 0 (higher) to n (lower) -> same remarks for isVisuallyJustBelow()
         return getHighestRow() == node.getRow() - 1;
     }
 
-
     public boolean isVisuallyJustBelow(VNode node) {
         return getLowestRow() == node.getRow() + 1;
     }
-
 
     public boolean isWithinNodeBoundary(VNode node) {
         int startColumn = node.token.getStartColumn();
@@ -62,33 +54,29 @@ abstract class VNode {
         return token.getStartColumn() >= startColumn && token.getEndColumn() <= endColumn;
     }
 
-
     private int getLowestRow() {
         return visit(new ExtractRowVisitor(Integer.MAX_VALUE) {
             @Override
             protected int compareRow(int left, int right) {
-                return left < right ? left : right;
+                return Math.min(left, right);
             }
         });
     }
-
 
     private int getHighestRow() {
         return visit(new ExtractRowVisitor(Integer.MIN_VALUE) {
             @Override
             protected int compareRow(int left, int right) {
-                return left > right ? left : right;
+                return Math.max(left, right);
             }
         });
     }
-
 
     static class VOperand extends VNode {
 
         VOperand(VToken token) {
             super(token);
         }
-
 
         @Override
         public <T, U> T visit(VNodeVisitor<T, U> visitor) {
@@ -98,7 +86,6 @@ abstract class VNode {
                 default -> throw new InternalError("Unknown token found " + token.getType());
             };
         }
-
 
         @Override
         public String toString() {
@@ -111,37 +98,30 @@ abstract class VNode {
         private final int priority;
         private VNode rightOperand;
 
-
         VBinaryNode(VToken token, int priority) {
             super(token);
             this.priority = priority;
         }
 
-
         public VNode getLeftOperand() {
             return leftOperand;
         }
-
 
         public void setLeftOperand(VNode leftOperand) {
             this.leftOperand = leftOperand;
         }
 
-
         public VNode getRightOperand() {
             return rightOperand;
         }
-
 
         public void setRightOperand(VNode rightOperand) {
             this.rightOperand = rightOperand;
         }
 
-
         public int getPriority() {
             return priority;
         }
-
 
         @Override
         public <T, U> T visit(VNodeVisitor<T, U> visitor) {
@@ -153,7 +133,6 @@ abstract class VNode {
                 default -> throw new InternalError("Unknown token found " + token.getType());
             };
         }
-
 
         @Override
         public String toString() {

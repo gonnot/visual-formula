@@ -20,6 +20,7 @@
  */
 
 package org.gonnot.prototype.visualformula;
+
 /**
  *
  */
@@ -39,46 +40,37 @@ class VToken {
         NUMBER
     }
 
-
     public static VToken number(String number, int column) {
         return new VToken(VTokenType.NUMBER, number, column);
     }
-
 
     public static VToken variables(String name, int column) {
         return new VToken(VTokenType.VARIABLE, name, column);
     }
 
-
     public static VToken add(int column) {
         return new VToken(VTokenType.ADD, column);
     }
-
 
     public static VToken minus(int column) {
         return new VToken(VTokenType.MINUS, column);
     }
 
-
     public static VToken multiply(int column) {
         return new VToken(VTokenType.MULTIPLY, column);
     }
-
 
     public static VToken divide(int column) {
         return new VToken(VTokenType.DIVIDE, column);
     }
 
-
     public static VToken visualDivide(String division, int column) {
         return new VToken(VTokenType.VISUAL_DIVIDE, division, column);
     }
 
-
     protected VToken(VTokenType type, int startColumn) {
         this(type, null, startColumn);
     }
-
 
     protected VToken(VTokenType type, String tokenInString, int startColumn) {
         this.type = type;
@@ -86,36 +78,29 @@ class VToken {
         this.tokenInString = tokenInString;
     }
 
-
     public VTokenType getType() {
         return type;
     }
-
 
     public String getTokenInString() {
         return tokenInString;
     }
 
-
     public int getRow() {
         return row;
     }
-
 
     public void setRow(int row) {
         this.row = row;
     }
 
-
     public int getStartColumn() {
         return startColumn;
     }
 
-
     public int getEndColumn() {
         return startColumn + (tokenInString != null ? tokenInString.length() : 1);
     }
-
 
     @Override
     public String toString() {
